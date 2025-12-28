@@ -180,7 +180,7 @@ export default function HomePage() {
                 </p>
               </div>
               <p className="text-slate-600 mt-4 text-sm">
-                添加时请备注"职业咨询"
+                添加时请备注"职业教练咨询"
               </p>
             </div>
           </div>
