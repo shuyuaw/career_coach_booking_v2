@@ -65,3 +65,8 @@
 ## Bug Fixes - Calendar Sync
 - [x] Investigate why bookings are not creating events in Feishu calendar
 - [x] Fix booking creation order: create calendar event first, then database booking
+
+## Investigation - Calendar Visibility
+- [x] Investigate why Feishu calendar events are not visible despite successful API response
+- [x] Check which Feishu account the calendar is associated with
+- [x] Add owner as attendee to calendar events so they appear in owner's personal calendar

@@ -206,6 +206,16 @@ export async function createCalendarEvent(event: CalendarEvent): Promise<void> {
       ? `${event.description || ''}\n\n会议链接: ${event.location}`
       : event.description || '';
 
+    // Add owner as attendee so event appears in their personal calendar
+    const ownerOpenId = process.env.OWNER_OPEN_ID;
+    const attendees = ownerOpenId ? [
+      {
+        attendee_user_id: ownerOpenId,
+        is_optional: false,
+        rsvp_status: "accept", // Auto-accept for owner
+      }
+    ] : [];
+
     const eventData = {
       summary: event.summary,
       description: descriptionWithLocation,
@@ -215,6 +225,9 @@ export async function createCalendarEvent(event: CalendarEvent): Promise<void> {
       end_time: {
         timestamp: endTimeSeconds.toString(),
       },
+      attendee_ability: "can_see_others", // Allow attendees to see each other
+      free_busy_status: "busy", // Mark as busy time
+      attendees: attendees.length > 0 ? attendees : undefined,
       // Omit location field as it requires specific format
       // Use the event UID as idempotency key to prevent duplicates
       idempotency_key: event.uid,
