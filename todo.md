@@ -50,3 +50,5 @@
 ## Bug Fixes
 - [x] Fix time slot display showing duplicates and unreasonable hours (00:00-04:00)
 - [x] Limit time slots to business hours (09:00-20:00)
+- [x] Fix timezone issue: backend generates UTC timestamps with China offset (UTC+8)
+- [x] Fix timezone issue: frontend displays China time from UTC timestamps

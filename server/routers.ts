@@ -52,25 +52,32 @@ function generateAvailableSlots(
   const twentyFourHoursFromNow = now + 24 * 60 * 60 * 1000;
 
   // Generate slots from 9 AM to 8 PM (last slot starts at 8 PM)
-  const current = new Date(startDate);
-  current.setHours(9, 0, 0, 0);
+  // Parse the date components from startDate and create UTC timestamp for China timezone (UTC+8)
+  const year = startDate.getFullYear();
+  const month = startDate.getMonth();
+  const day = startDate.getDate();
+  // China time 09:00 = UTC 01:00 (because UTC+8)
+  const current = new Date(Date.UTC(year, month, day, 1, 0, 0, 0));
+  // China time 20:00 = UTC 12:00, so last slot ends at UTC 13:00
+  const endOfDayUTC = Date.UTC(year, month, day, 13, 0, 0, 0);
 
-  while (current <= endDate) {
+  while (current.getTime() < endOfDayUTC) {
+    const currentHour = current.getUTCHours();
+    
+    // Skip if slot is after 8 PM China time (20:00 China = 12:00 UTC)
+    if (currentHour > 12) {
+      // Move to next day at 9 AM China time (01:00 UTC)
+      current.setUTCDate(current.getUTCDate() + 1);
+      current.setUTCHours(1, 0, 0, 0);
+      continue;
+    }
+
     const slotStart = current.getTime();
     const slotEnd = slotStart + 60 * 60 * 1000; // 60 minutes
 
     // Skip if slot is in the past or within 24 hours
     if (slotStart < twentyFourHoursFromNow) {
-      current.setHours(current.getHours() + 1);
-      continue;
-    }
-
-    // Skip if slot is after 8 PM (20:00 is the last slot)
-    const currentHour = current.getHours();
-    if (currentHour >= 21) {
-      // Move to next day at 9 AM
-      current.setDate(current.getDate() + 1);
-      current.setHours(9, 0, 0, 0);
+      current.setUTCHours(current.getUTCHours() + 1);
       continue;
     }
 
@@ -83,7 +90,7 @@ function generateAvailableSlots(
       slots.push(slotStart);
     }
 
-    current.setHours(current.getHours() + 1);
+    current.setUTCHours(current.getUTCHours() + 1);
   }
 
   return slots;
@@ -118,21 +125,17 @@ export const appRouter = router({
     getAvailableSlots: publicProcedure
       .input(
         z.object({
-          startDate: z.number(), // UTC timestamp
-          endDate: z.number(), // UTC timestamp
+          date: z.string(), // YYYY-MM-DD format
         })
       )
       .query(async ({ input }) => {
-        const busyBlocks = await fetchBusyBlocks(
-          new Date(input.startDate),
-          new Date(input.endDate)
-        );
+        // Parse date in local timezone (Asia/Shanghai)
+        const [year, month, day] = input.date.split('-').map(Number);
+        const startDate = new Date(year, month - 1, day, 0, 0, 0, 0);
+        const endDate = new Date(year, month - 1, day, 23, 59, 59, 999);
+        const busyBlocks = await fetchBusyBlocks(startDate, endDate);
 
-        const slots = generateAvailableSlots(
-          new Date(input.startDate),
-          new Date(input.endDate),
-          busyBlocks
-        );
+        const slots = generateAvailableSlots(startDate, endDate, busyBlocks);
 
         return { slots };
       }),

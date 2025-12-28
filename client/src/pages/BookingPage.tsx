@@ -31,21 +31,26 @@ export default function BookingPage() {
   );
 
   // Fetch available slots when date is selected
-  const [dateRange, setDateRange] = useState<{ start: number; end: number } | null>(null);
+  const [selectedDateString, setSelectedDateString] = useState<string | null>(null);
 
   useEffect(() => {
     if (selectedDate) {
-      const start = new Date(selectedDate);
-      start.setHours(0, 0, 0, 0);
-      const end = new Date(selectedDate);
-      end.setHours(23, 59, 59, 999);
-      setDateRange({ start: start.getTime(), end: end.getTime() });
+      // Format date as YYYY-MM-DD
+      const year = selectedDate.getFullYear();
+      const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+      const day = String(selectedDate.getDate()).padStart(2, '0');
+      setSelectedDateString(`${year}-${month}-${day}`);
     }
   }, [selectedDate]);
 
   const { data: slotsData, isLoading: slotsLoading } = trpc.booking.getAvailableSlots.useQuery(
-    { startDate: dateRange?.start || 0, endDate: dateRange?.end || 0 },
-    { enabled: !!dateRange }
+    { date: selectedDateString || '' },
+    { 
+      enabled: !!selectedDateString,
+      staleTime: 0,
+      refetchOnMount: true,
+      refetchOnWindowFocus: false
+    }
   );
 
   // Create booking mutation
@@ -251,7 +256,13 @@ export default function BookingPage() {
                         onClick={() => setSelectedSlot(slot)}
                       >
                         <Clock className="w-4 h-4 mr-2" />
-                        {format(new Date(slot), "HH:mm", { locale: zhCN })}
+                        {/* Display time in China timezone (UTC+8) */
+                        (() => {
+                          const d = new Date(slot);
+                          const chinaHour = d.getUTCHours() + 8;
+                          const hour = chinaHour >= 24 ? chinaHour - 24 : chinaHour;
+                          return `${hour.toString().padStart(2, '0')}:00`;
+                        })()}
                       </Button>
                     ))}
                   </div>
