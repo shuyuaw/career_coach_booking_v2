@@ -365,6 +365,32 @@ export const appRouter = router({
         return { success: true };
       }),
 
+    // Set bulk credits directly
+    setCredits: protectedProcedure
+      .input(
+        z.object({
+          mobileNumber: z.string(),
+          credits: z.number().min(0),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+
+        const user = await getBookingUserByMobile(input.mobileNumber);
+        if (!user) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+        }
+
+        await updateBookingUserCredits(
+          input.mobileNumber,
+          input.credits
+        );
+
+        return { success: true };
+      }),
+
     // Activate unlimited subscription
     activateUnlimited: protectedProcedure
       .input(z.object({ mobileNumber: z.string() }))

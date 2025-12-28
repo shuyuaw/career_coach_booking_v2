@@ -26,6 +26,7 @@ export default function AdminDashboard() {
   const [newUserMobile, setNewUserMobile] = useState("");
   const [newUserNickname, setNewUserNickname] = useState("");
   const [newUserCredits, setNewUserCredits] = useState("0");
+  const [editingCredits, setEditingCredits] = useState<{ [key: string]: string }>({});
 
   // Check admin status
   const { data: adminCheck, isLoading: adminCheckLoading } = trpc.admin.isAdmin.useQuery(
@@ -70,6 +71,17 @@ export default function AdminDashboard() {
     },
   });
 
+  // Set credits mutation
+  const setCreditsMutation = trpc.admin.setCredits.useMutation({
+    onSuccess: () => {
+      toast.success("课时已更新");
+      refetchUsers();
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
   // Activate unlimited mutation
   const activateUnlimitedMutation = trpc.admin.activateUnlimited.useMutation({
     onSuccess: () => {
@@ -96,6 +108,30 @@ export default function AdminDashboard() {
 
   const handleAddCredits = (mobileNumber: string, amount: number) => {
     addCreditsMutation.mutate({ mobileNumber, amount });
+  };
+
+  const handleSetCredits = (mobileNumber: string, credits: number) => {
+    setCreditsMutation.mutate({ mobileNumber, credits });
+    setEditingCredits((prev) => {
+      const updated = { ...prev };
+      delete updated[mobileNumber];
+      return updated;
+    });
+  };
+
+  const handleEditCredits = (mobileNumber: string, currentCredits: number) => {
+    setEditingCredits((prev) => ({
+      ...prev,
+      [mobileNumber]: currentCredits.toString(),
+    }));
+  };
+
+  const handleCancelEdit = (mobileNumber: string) => {
+    setEditingCredits((prev) => {
+      const updated = { ...prev };
+      delete updated[mobileNumber];
+      return updated;
+    });
   };
 
   const handleActivateUnlimited = (mobileNumber: string) => {
@@ -253,7 +289,7 @@ export default function AdminDashboard() {
                 <CardContent className="space-y-4">
                   {/* Credit Status */}
                   <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                    <div>
+                    <div className="flex-1">
                       <p className="text-sm text-gray-600">课时状态</p>
                       {hasUnlimited ? (
                         <div className="mt-1">
@@ -265,8 +301,45 @@ export default function AdminDashboard() {
                             有效期至：{user.unlimitedExpiry ? format(new Date(user.unlimitedExpiry), "yyyy年MM月dd日", { locale: zhCN }) : ""}
                           </p>
                         </div>
+                      ) : editingCredits[user.mobileNumber] !== undefined ? (
+                        <div className="flex items-center gap-2 mt-1">
+                          <Input
+                            type="number"
+                            min="0"
+                            value={editingCredits[user.mobileNumber]}
+                            onChange={(e) =>
+                              setEditingCredits((prev) => ({
+                                ...prev,
+                                [user.mobileNumber]: e.target.value,
+                              }))
+                            }
+                            className="w-24 h-8"
+                          />
+                          <Button
+                            size="sm"
+                            onClick={() =>
+                              handleSetCredits(
+                                user.mobileNumber,
+                                parseInt(editingCredits[user.mobileNumber]) || 0
+                              )
+                            }
+                            disabled={setCreditsMutation.isPending}
+                          >
+                            保存
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleCancelEdit(user.mobileNumber)}
+                          >
+                            取消
+                          </Button>
+                        </div>
                       ) : (
-                        <p className="text-lg font-bold text-gray-900 mt-1">
+                        <p
+                          className="text-lg font-bold text-gray-900 mt-1 cursor-pointer hover:text-blue-600"
+                          onClick={() => handleEditCredits(user.mobileNumber, user.bulkCredits)}
+                        >
                           {user.bulkCredits} 次
                         </p>
                       )}
@@ -275,20 +348,11 @@ export default function AdminDashboard() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleAddCredits(user.mobileNumber, 1)}
+                        onClick={() => handleAddCredits(user.mobileNumber, 10)}
                         disabled={addCreditsMutation.isPending}
                       >
                         <Plus className="w-4 h-4 mr-1" />
-                        +1
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleAddCredits(user.mobileNumber, 5)}
-                        disabled={addCreditsMutation.isPending}
-                      >
-                        <Plus className="w-4 h-4 mr-1" />
-                        +5
+                        +10
                       </Button>
                       <Button
                         variant="default"

@@ -31,7 +31,7 @@
 ## Frontend - Admin Dashboard
 - [x] Admin authentication check
 - [x] User list with sorting (recent session, A-Z)
-- [x] Manual credit top-up buttons (+1, +5)
+- [x] Manual credit top-up buttons (replaced with +10)
 - [x] Unlimited subscription activation
 - [x] Booking URL copy functionality
 - [x] User bookings view
@@ -52,3 +52,8 @@
 - [x] Limit time slots to business hours (09:00-20:00)
 - [x] Fix timezone issue: backend generates UTC timestamps with China offset (UTC+8)
 - [x] Fix timezone issue: frontend displays China time from UTC timestamps
+
+## New Feature Requests
+- [x] Replace +1 and +5 credit buttons with single +10 button in admin dashboard
+- [x] Make credit balance directly editable in admin dashboard
+- [x] Add backend endpoint to update user credits directly
