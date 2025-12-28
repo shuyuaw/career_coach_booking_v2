@@ -53,7 +53,7 @@ function generateAvailableSlots(
 
   // Generate slots from 9 AM to 8 PM (last slot starts at 8 PM)
   const current = new Date(startDate);
-  current.setUTCHours(9, 0, 0, 0);
+  current.setHours(9, 0, 0, 0);
 
   while (current <= endDate) {
     const slotStart = current.getTime();
@@ -61,14 +61,16 @@ function generateAvailableSlots(
 
     // Skip if slot is in the past or within 24 hours
     if (slotStart < twentyFourHoursFromNow) {
-      current.setUTCHours(current.getUTCHours() + 1);
+      current.setHours(current.getHours() + 1);
       continue;
     }
 
-    // Skip if slot is after 8 PM
-    if (current.getUTCHours() >= 21) {
-      current.setUTCDate(current.getUTCDate() + 1);
-      current.setUTCHours(9, 0, 0, 0);
+    // Skip if slot is after 8 PM (20:00 is the last slot)
+    const currentHour = current.getHours();
+    if (currentHour >= 21) {
+      // Move to next day at 9 AM
+      current.setDate(current.getDate() + 1);
+      current.setHours(9, 0, 0, 0);
       continue;
     }
 
@@ -81,7 +83,7 @@ function generateAvailableSlots(
       slots.push(slotStart);
     }
 
-    current.setUTCHours(current.getUTCHours() + 1);
+    current.setHours(current.getHours() + 1);
   }
 
   return slots;
