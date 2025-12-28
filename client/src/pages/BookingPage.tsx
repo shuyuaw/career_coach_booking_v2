@@ -228,7 +228,7 @@ export default function BookingPage() {
             {/* Date Picker */}
             <div>
               <h3 className="text-sm font-medium text-gray-700 mb-3">选择日期</h3>
-              <div className="rounded-md border overflow-hidden">
+              <div className="rounded-md border pb-2">
                 <Calendar
                   mode="single"
                   selected={selectedDate}
