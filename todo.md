@@ -61,3 +61,7 @@
 ## Bug Fixes - Calendar UI
 - [x] Fix calendar component bottom border rendering issue (border appearing on top of last row instead of below it on some browsers)
 - [x] Fix calendar last row (29-4) being cut off by overflow-hidden on some browsers
+
+## Bug Fixes - Calendar Sync
+- [x] Investigate why bookings are not creating events in Feishu calendar
+- [x] Fix booking creation order: create calendar event first, then database booking

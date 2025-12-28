@@ -209,8 +209,28 @@ export const appRouter = router({
           creditType = "bulk";
         }
 
-        // Create booking
+        // Create calendar event first to ensure sync
         const bookingId = nanoid();
+        const tencentMeetingUrl = process.env.TENCENT_MEETING_URL || "";
+        
+        try {
+          await createCalendarEvent({
+            uid: bookingId,
+            summary: `[教练课程] ${user.nickname}`,
+            startTime: input.startTime,
+            endTime,
+            location: tencentMeetingUrl,
+            description: `剩余课时: ${creditType === "bulk" ? user.bulkCredits - 1 : "无限制"}`,
+          });
+        } catch (error) {
+          console.error('[Booking] Failed to create calendar event:', error);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to create calendar event. Please try again.",
+          });
+        }
+
+        // Create booking in database after calendar event succeeds
         await createBooking({
           id: bookingId,
           userId: input.userId,
@@ -227,17 +247,6 @@ export const appRouter = router({
             user.bulkCredits - 1
           );
         }
-
-        // Create calendar event
-        const tencentMeetingUrl = process.env.TENCENT_MEETING_URL || "";
-        await createCalendarEvent({
-          uid: bookingId,
-          summary: `[教练课程] ${user.nickname}`,
-          startTime: input.startTime,
-          endTime,
-          location: tencentMeetingUrl,
-          description: `剩余课时: ${creditType === "bulk" ? user.bulkCredits - 1 : "无限制"}`,
-        });
 
         return {
           success: true,

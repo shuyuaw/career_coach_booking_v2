@@ -77,18 +77,19 @@ describe("Complete Booking Flow Integration Test", () => {
     const ctx = createPublicContext();
     const caller = appRouter.createCaller(ctx);
 
-    const startDate = Date.now();
-    const endDate = startDate + 7 * 24 * 60 * 60 * 1000; // 7 days from now
+    // Use tomorrow's date in YYYY-MM-DD format
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 2);
+    const date = tomorrow.toISOString().split('T')[0];
 
     const result = await caller.booking.getAvailableSlots({
-      startDate,
-      endDate,
+      date,
     });
 
     expect(result).toBeDefined();
     expect(Array.isArray(result.slots)).toBe(true);
     // Should have some slots (depends on calendar availability)
-    console.log(`Found ${result.slots.length} available slots`);
+    console.log(`Found ${result.slots.length} available slots for ${date}`);
   });
 
   it("should create a booking with bulk credits", async () => {
@@ -110,7 +111,7 @@ describe("Complete Booking Flow Integration Test", () => {
     // Verify user credits were deducted
     const user = await getBookingUserBySlug(testUserSlug);
     expect(user?.bulkCredits).toBe(4); // 5 - 1 = 4
-  });
+  }, 15000); // Increase timeout to 15s for calendar API
 
   it("should list user bookings", async () => {
     const ctx = createPublicContext();
