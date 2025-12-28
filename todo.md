@@ -70,3 +70,13 @@
 - [x] Investigate why Feishu calendar events are not visible despite successful API response
 - [x] Check which Feishu account the calendar is associated with
 - [x] Add owner as attendee to calendar events so they appear in owner's personal calendar
+
+## Calendar Verification
+- [ ] Create diagnostic script to verify Feishu calendar visibility
+- [ ] Check if calendar events are properly created with owner as attendee
+
+## Homepage Development
+- [x] Copy coach profile photo to project public directory
+- [x] Create homepage component with hero section, about, services, and contact
+- [x] Update App.tsx to route root path to homepage
+- [x] Design professional layout matching coach's personal brand

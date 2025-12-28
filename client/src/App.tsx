@@ -6,10 +6,12 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import BookingPage from "./pages/BookingPage";
 import AdminDashboard from "./pages/AdminDashboard";
+import HomePage from "./pages/HomePage";
 
 function Router() {
   return (
     <Switch>
+      <Route path="/" component={HomePage} />
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/b/:slug" component={BookingPage} />
       <Route path="/404" component={NotFound} />
