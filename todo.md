@@ -57,3 +57,6 @@
 - [x] Replace +1 and +5 credit buttons with single +10 button in admin dashboard
 - [x] Make credit balance directly editable in admin dashboard
 - [x] Add backend endpoint to update user credits directly
+
+## Bug Fixes - Calendar UI
+- [x] Fix calendar component bottom border rendering issue (border appearing on top of last row instead of below it on some browsers)

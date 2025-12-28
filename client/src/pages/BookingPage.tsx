@@ -228,14 +228,16 @@ export default function BookingPage() {
             {/* Date Picker */}
             <div>
               <h3 className="text-sm font-medium text-gray-700 mb-3">选择日期</h3>
-              <Calendar
-                mode="single"
-                selected={selectedDate}
-                onSelect={setSelectedDate}
-                disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
-                locale={zhCN}
-                className="rounded-md border w-full"
-              />
+              <div className="rounded-md border overflow-hidden">
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
+                  disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                  locale={zhCN}
+                  className="w-full"
+                />
+              </div>
             </div>
 
             {/* Time Slots */}
