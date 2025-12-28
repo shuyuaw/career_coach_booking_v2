@@ -1,10 +1,93 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
+import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
+import { z } from "zod";
+import { nanoid } from "nanoid";
+import {
+  getBookingUserBySlug,
+  getBookingUserByMobile,
+  createBookingUser,
+  updateBookingUserCredits,
+  updateBookingUserUnlimited,
+  getAllBookingUsers,
+  createBooking,
+  getUserActiveBookings,
+  getUserWeeklyBookings,
+  cancelBooking,
+  getBookingById,
+  getAllUserBookings,
+} from "./bookingDb";
+import { fetchBusyBlocks, createCalendarEvent } from "./feishu";
+import { TRPCError } from "@trpc/server";
+
+// Helper: Get start and end of week (Monday to Sunday) for a given timestamp
+function getWeekBounds(timestamp: number): { weekStart: number; weekEnd: number } {
+  const date = new Date(timestamp);
+  const dayOfWeek = date.getUTCDay(); // 0 = Sunday, 1 = Monday, ...
+  const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+  
+  const monday = new Date(date);
+  monday.setUTCDate(date.getUTCDate() + daysToMonday);
+  monday.setUTCHours(0, 0, 0, 0);
+  
+  const sunday = new Date(monday);
+  sunday.setUTCDate(monday.getUTCDate() + 6);
+  sunday.setUTCHours(23, 59, 59, 999);
+  
+  return {
+    weekStart: monday.getTime(),
+    weekEnd: sunday.getTime(),
+  };
+}
+
+// Helper: Generate available 60-minute slots
+function generateAvailableSlots(
+  startDate: Date,
+  endDate: Date,
+  busyBlocks: Array<{ startTime: number; endTime: number }>
+): number[] {
+  const slots: number[] = [];
+  const now = Date.now();
+  const twentyFourHoursFromNow = now + 24 * 60 * 60 * 1000;
+
+  // Generate slots from 9 AM to 8 PM (last slot starts at 8 PM)
+  const current = new Date(startDate);
+  current.setUTCHours(9, 0, 0, 0);
+
+  while (current <= endDate) {
+    const slotStart = current.getTime();
+    const slotEnd = slotStart + 60 * 60 * 1000; // 60 minutes
+
+    // Skip if slot is in the past or within 24 hours
+    if (slotStart < twentyFourHoursFromNow) {
+      current.setUTCHours(current.getUTCHours() + 1);
+      continue;
+    }
+
+    // Skip if slot is after 8 PM
+    if (current.getUTCHours() >= 21) {
+      current.setUTCDate(current.getUTCDate() + 1);
+      current.setUTCHours(9, 0, 0, 0);
+      continue;
+    }
+
+    // Check if slot conflicts with any busy block
+    const hasConflict = busyBlocks.some(
+      (block) => slotStart < block.endTime && slotEnd > block.startTime
+    );
+
+    if (!hasConflict) {
+      slots.push(slotStart);
+    }
+
+    current.setUTCHours(current.getUTCHours() + 1);
+  }
+
+  return slots;
+}
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
@@ -17,12 +100,300 @@ export const appRouter = router({
     }),
   }),
 
-  // TODO: add feature routers here, e.g.
-  // todo: router({
-  //   list: protectedProcedure.query(({ ctx }) =>
-  //     db.getUserTodos(ctx.user.id)
-  //   ),
-  // }),
+  booking: router({
+    // Get user info by access slug
+    getUserBySlug: publicProcedure
+      .input(z.object({ slug: z.string() }))
+      .query(async ({ input }) => {
+        const user = await getBookingUserBySlug(input.slug);
+        if (!user) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+        }
+        return user;
+      }),
+
+    // Get available time slots
+    getAvailableSlots: publicProcedure
+      .input(
+        z.object({
+          startDate: z.number(), // UTC timestamp
+          endDate: z.number(), // UTC timestamp
+        })
+      )
+      .query(async ({ input }) => {
+        const busyBlocks = await fetchBusyBlocks(
+          new Date(input.startDate),
+          new Date(input.endDate)
+        );
+
+        const slots = generateAvailableSlots(
+          new Date(input.startDate),
+          new Date(input.endDate),
+          busyBlocks
+        );
+
+        return { slots };
+      }),
+
+    // Get user's active bookings
+    getUserBookings: publicProcedure
+      .input(z.object({ userId: z.string() }))
+      .query(async ({ input }) => {
+        const bookings = await getUserActiveBookings(input.userId);
+        return { bookings };
+      }),
+
+    // Create a new booking
+    createBooking: publicProcedure
+      .input(
+        z.object({
+          userId: z.string(),
+          startTime: z.number(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        const user = await getBookingUserByMobile(input.userId);
+        if (!user) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+        }
+
+        const now = Date.now();
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+
+        // Enforce 24-hour rule
+        if (input.startTime - now < twentyFourHours) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Cannot book within 24 hours of session start time",
+          });
+        }
+
+        const endTime = input.startTime + 60 * 60 * 1000;
+
+        // Check credit availability
+        let creditType: "bulk" | "unlimited";
+        const hasUnlimited =
+          user.unlimitedExpiry && user.unlimitedExpiry > now;
+
+        if (hasUnlimited) {
+          // Check weekly limit for unlimited users
+          const { weekStart, weekEnd } = getWeekBounds(input.startTime);
+          const weeklyBookings = await getUserWeeklyBookings(
+            input.userId,
+            weekStart,
+            weekEnd
+          );
+
+          if (weeklyBookings.length >= 3) {
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: "Weekly booking limit reached (max 3 sessions per week)",
+            });
+          }
+
+          creditType = "unlimited";
+        } else {
+          // Use bulk credits
+          if (user.bulkCredits <= 0) {
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: "Insufficient credits",
+            });
+          }
+
+          creditType = "bulk";
+        }
+
+        // Create booking
+        const bookingId = nanoid();
+        await createBooking({
+          id: bookingId,
+          userId: input.userId,
+          startTime: input.startTime,
+          endTime,
+          status: "active",
+          creditTypeUsed: creditType,
+        });
+
+        // Deduct bulk credit if applicable
+        if (creditType === "bulk") {
+          await updateBookingUserCredits(
+            input.userId,
+            user.bulkCredits - 1
+          );
+        }
+
+        // Create calendar event
+        const tencentMeetingUrl = process.env.TENCENT_MEETING_URL || "";
+        await createCalendarEvent({
+          uid: bookingId,
+          summary: `[教练课程] ${user.nickname}`,
+          startTime: input.startTime,
+          endTime,
+          location: tencentMeetingUrl,
+          description: `剩余课时: ${creditType === "bulk" ? user.bulkCredits - 1 : "无限制"}`,
+        });
+
+        return {
+          success: true,
+          bookingId,
+          meetingUrl: tencentMeetingUrl,
+        };
+      }),
+
+    // Cancel a booking
+    cancelBooking: publicProcedure
+      .input(z.object({ bookingId: z.string(), userId: z.string() }))
+      .mutation(async ({ input }) => {
+        const booking = await getBookingById(input.bookingId);
+        if (!booking) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Booking not found" });
+        }
+
+        if (booking.userId !== input.userId) {
+          throw new TRPCError({ code: "FORBIDDEN", message: "Unauthorized" });
+        }
+
+        if (booking.status === "cancelled") {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Booking already cancelled",
+          });
+        }
+
+        const now = Date.now();
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+
+        // Enforce 24-hour rule
+        if (booking.startTime - now < twentyFourHours) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Cannot cancel within 24 hours of session start time",
+          });
+        }
+
+        // Cancel booking
+        await cancelBooking(input.bookingId);
+
+        // Refund bulk credit if applicable
+        if (booking.creditTypeUsed === "bulk") {
+          const user = await getBookingUserByMobile(input.userId);
+          if (user) {
+            await updateBookingUserCredits(
+              input.userId,
+              user.bulkCredits + 1
+            );
+          }
+        }
+
+        return { success: true };
+      }),
+  }),
+
+  admin: router({
+    // Check if current user is admin
+    isAdmin: protectedProcedure.query(({ ctx }) => {
+      return { isAdmin: ctx.user.role === "admin" };
+    }),
+
+    // Get all booking users
+    getAllUsers: protectedProcedure.query(async ({ ctx }) => {
+      if (ctx.user.role !== "admin") {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
+
+      const users = await getAllBookingUsers();
+      return { users };
+    }),
+
+    // Create a new booking user
+    createUser: protectedProcedure
+      .input(
+        z.object({
+          mobileNumber: z.string(),
+          nickname: z.string(),
+          bulkCredits: z.number().default(0),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+
+        // Generate unique access slug
+        const accessSlug = `${input.nickname.toLowerCase().replace(/\s+/g, '-')}-${nanoid(6)}`;
+
+        await createBookingUser({
+          mobileNumber: input.mobileNumber,
+          accessSlug,
+          nickname: input.nickname,
+          bulkCredits: input.bulkCredits,
+          unlimitedExpiry: null,
+        });
+
+        return { success: true, accessSlug };
+      }),
+
+    // Add bulk credits to user
+    addCredits: protectedProcedure
+      .input(
+        z.object({
+          mobileNumber: z.string(),
+          amount: z.number(),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+
+        const user = await getBookingUserByMobile(input.mobileNumber);
+        if (!user) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+        }
+
+        await updateBookingUserCredits(
+          input.mobileNumber,
+          user.bulkCredits + input.amount
+        );
+
+        return { success: true };
+      }),
+
+    // Activate unlimited subscription
+    activateUnlimited: protectedProcedure
+      .input(z.object({ mobileNumber: z.string() }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+
+        const user = await getBookingUserByMobile(input.mobileNumber);
+        if (!user) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+        }
+
+        // Set expiry to 12 weeks from now
+        const twelveWeeks = 12 * 7 * 24 * 60 * 60 * 1000;
+        const expiry = Date.now() + twelveWeeks;
+
+        await updateBookingUserUnlimited(input.mobileNumber, expiry);
+
+        return { success: true, expiry };
+      }),
+
+    // Get user bookings (for admin view)
+    getUserBookings: protectedProcedure
+      .input(z.object({ mobileNumber: z.string() }))
+      .query(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+
+        const bookings = await getAllUserBookings(input.mobileNumber);
+        return { bookings };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
