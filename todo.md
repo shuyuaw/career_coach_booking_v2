@@ -91,3 +91,11 @@
 
 ## Admin Dashboard Enhancement
 - [x] Display user email addresses in admin dashboard user list
+
+## Database Updates
+- [x] Update Connie Yu's email to ywlconnie@126.com
+
+## Email Notification Enhancement
+- [x] Send booking confirmation email to coach (sw2703@icloud.com) in addition to customer
+- [x] Implement cancellation email notification for customers
+- [x] Send cancellation email to coach (sw2703@icloud.com) when booking is cancelled

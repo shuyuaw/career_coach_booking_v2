@@ -19,7 +19,7 @@ import {
   getAllUserBookings,
 } from "./bookingDb";
 import { fetchBusyBlocks, createCalendarEvent } from "./feishu";
-import { sendBookingConfirmation } from "./email";
+import { sendBookingConfirmation, sendBookingCancellation } from "./email";
 import { TRPCError } from "@trpc/server";
 
 // Helper: Get start and end of week (Monday to Sunday) for a given timestamp
@@ -300,18 +300,34 @@ export const appRouter = router({
           });
         }
 
+        // Get user info for email
+        const user = await getBookingUserByMobile(input.userId);
+        if (!user) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+        }
+
         // Cancel booking
         await cancelBooking(input.bookingId);
 
         // Refund bulk credit if applicable
         if (booking.creditTypeUsed === "bulk") {
-          const user = await getBookingUserByMobile(input.userId);
-          if (user) {
-            await updateBookingUserCredits(
-              input.userId,
-              user.bulkCredits + 1
-            );
-          }
+          await updateBookingUserCredits(
+            input.userId,
+            user.bulkCredits + 1
+          );
+        }
+
+        // Send cancellation email to user and coach
+        try {
+          await sendBookingCancellation({
+            userEmail: user.email,
+            userName: user.nickname,
+            startTime: new Date(booking.startTime),
+            endTime: new Date(booking.endTime),
+          });
+        } catch (error) {
+          console.error("[Booking] Failed to send cancellation email:", error);
+          // Don't fail the cancellation if email fails
         }
 
         return { success: true };

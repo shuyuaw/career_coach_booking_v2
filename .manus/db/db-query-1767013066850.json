@@ -1,0 +1,15 @@
+{
+  "query": "SELECT nickname, mobile_number, email FROM booking_users WHERE nickname = 'Connie Yu'",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2C3PRYztej175k5.fc18905ccbe1 --database inkPCLizzTv9MTUcRxEYef --execute SELECT nickname, mobile_number, email FROM booking_users WHERE nickname = 'Connie Yu'",
+  "rows": [
+    {
+      "nickname": "Connie Yu",
+      "mobile_number": "8617665172471",
+      "email": "ywlconnie@126.com"
+    }
+  ],
+  "messages": [],
+  "stdout": "nickname\tmobile_number\temail\nConnie Yu\t8617665172471\tywlconnie@126.com\n",
+  "stderr": "",
+  "execution_time_ms": 1545
+}
