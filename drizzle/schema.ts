@@ -27,6 +27,7 @@ export const bookingUsers = mysqlTable("booking_users", {
   mobileNumber: varchar("mobile_number", { length: 20 }).primaryKey(),
   accessSlug: varchar("access_slug", { length: 100 }).notNull().unique(),
   nickname: varchar("nickname", { length: 100 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
   bulkCredits: int("bulk_credits").default(0).notNull(),
   unlimitedExpiry: bigint("unlimited_expiry", { mode: "number" }), // UTC timestamp in milliseconds
   createdAt: timestamp("created_at").defaultNow().notNull(),

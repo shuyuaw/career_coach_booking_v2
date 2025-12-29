@@ -15,6 +15,13 @@
       "when": 1766839549558,
       "tag": "0001_opposite_zombie",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1767010178504,
+      "tag": "0002_happy_the_anarchist",
+      "breakpoints": true
     }
   ]
 }

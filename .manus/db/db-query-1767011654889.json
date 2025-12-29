@@ -1,0 +1,70 @@
+{
+  "query": "SELECT mobile_number, nickname, email FROM booking_users;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2C3PRYztej175k5.fc18905ccbe1 --database inkPCLizzTv9MTUcRxEYef --execute SELECT mobile_number, nickname, email FROM booking_users;",
+  "rows": [
+    {
+      "mobile_number": "13912345678",
+      "nickname": "李明",
+      "email": ""
+    },
+    {
+      "mobile_number": "17665172471",
+      "nickname": "于同学",
+      "email": ""
+    },
+    {
+      "mobile_number": "8617665172471",
+      "nickname": "Connie Yu",
+      "email": ""
+    },
+    {
+      "mobile_number": "test-1766881122454",
+      "nickname": "测试用户",
+      "email": ""
+    },
+    {
+      "mobile_number": "test-1766881150549",
+      "nickname": "测试用户",
+      "email": ""
+    },
+    {
+      "mobile_number": "test-1766881180258",
+      "nickname": "测试用户",
+      "email": ""
+    },
+    {
+      "mobile_number": "test-1766881214122",
+      "nickname": "测试用户",
+      "email": ""
+    },
+    {
+      "mobile_number": "test-1766881232519",
+      "nickname": "测试用户",
+      "email": ""
+    },
+    {
+      "mobile_number": "test-1766881266575",
+      "nickname": "测试用户",
+      "email": ""
+    },
+    {
+      "mobile_number": "test-1766899516386",
+      "nickname": "测试用户",
+      "email": ""
+    },
+    {
+      "mobile_number": "test-1766899565624",
+      "nickname": "测试用户",
+      "email": ""
+    },
+    {
+      "mobile_number": "test-1766916629669",
+      "nickname": "测试用户",
+      "email": ""
+    }
+  ],
+  "messages": [],
+  "stdout": "mobile_number\tnickname\temail\n13912345678\t李明\t\n17665172471\t于同学\t\n8617665172471\tConnie Yu\t\ntest-1766881122454\t测试用户\t\ntest-1766881150549\t测试用户\t\ntest-1766881180258\t测试用户\t\ntest-1766881214122\t测试用户\t\ntest-1766881232519\t测试用户\t\ntest-1766881266575\t测试用户\t\ntest-1766899516386\t测试用户\t\ntest-1766899565624\t测试用户\t\ntest-1766916629669\t测试用户\t\n",
+  "stderr": "",
+  "execution_time_ms": 4213
+}

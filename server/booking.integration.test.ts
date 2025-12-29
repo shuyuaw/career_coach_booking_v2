@@ -56,6 +56,7 @@ describe("Complete Booking Flow Integration Test", () => {
       mobileNumber: testMobileNumber,
       accessSlug: testUserSlug,
       nickname: testNickname,
+      email: 'test.integration@example.com',
       bulkCredits: 5,
       unlimitedExpiry: null,
     });

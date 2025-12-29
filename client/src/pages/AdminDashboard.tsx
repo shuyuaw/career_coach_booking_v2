@@ -25,6 +25,7 @@ export default function AdminDashboard() {
   const [createUserOpen, setCreateUserOpen] = useState(false);
   const [newUserMobile, setNewUserMobile] = useState("");
   const [newUserNickname, setNewUserNickname] = useState("");
+  const [newUserEmail, setNewUserEmail] = useState("");
   const [newUserCredits, setNewUserCredits] = useState("0");
   const [editingCredits, setEditingCredits] = useState<{ [key: string]: string }>({});
 
@@ -47,6 +48,7 @@ export default function AdminDashboard() {
       setCreateUserOpen(false);
       setNewUserMobile("");
       setNewUserNickname("");
+      setNewUserEmail("");
       setNewUserCredits("0");
       refetchUsers();
       
@@ -94,7 +96,7 @@ export default function AdminDashboard() {
   });
 
   const handleCreateUser = () => {
-    if (!newUserMobile || !newUserNickname) {
+    if (!newUserMobile || !newUserNickname || !newUserEmail) {
       toast.error("请填写完整信息");
       return;
     }
@@ -102,6 +104,7 @@ export default function AdminDashboard() {
     createUserMutation.mutate({
       mobileNumber: newUserMobile,
       nickname: newUserNickname,
+      email: newUserEmail,
       bulkCredits: parseInt(newUserCredits) || 0,
     });
   };
@@ -226,6 +229,16 @@ export default function AdminDashboard() {
                       placeholder="张三"
                       value={newUserNickname}
                       onChange={(e) => setNewUserNickname(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">邮箱</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="user@example.com"
+                      value={newUserEmail}
+                      onChange={(e) => setNewUserEmail(e.target.value)}
                     />
                   </div>
                   <div className="space-y-2">

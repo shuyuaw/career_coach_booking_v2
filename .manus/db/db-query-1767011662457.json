@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE booking_users SET email = CONCAT(REPLACE(nickname, ' ', ''), '@example.com') WHERE email IS NULL OR email = '';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2C3PRYztej175k5.fc18905ccbe1 --database inkPCLizzTv9MTUcRxEYef --execute UPDATE booking_users SET email = CONCAT(REPLACE(nickname, ' ', ''), '@example.com') WHERE email IS NULL OR email = '';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1621
+}

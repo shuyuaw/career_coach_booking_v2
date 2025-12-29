@@ -1,0 +1,1 @@
+ALTER TABLE `booking_users` ADD `email` varchar(320) NOT NULL;

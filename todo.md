@@ -80,3 +80,11 @@
 - [x] Create homepage component with hero section, about, services, and contact
 - [x] Update App.tsx to route root path to homepage
 - [x] Design professional layout matching coach's personal brand
+
+## Email Notification Feature
+- [x] Add email field to booking_user table schema
+- [x] Update admin UI to include email input when creating users
+- [x] Configure Gmail SMTP service (daughterofsalem@gmail.com)
+- [x] Implement email sending service using nodemailer
+- [x] Send booking confirmation email after successful booking
+- [x] Test email delivery

@@ -19,6 +19,7 @@ import {
   getAllUserBookings,
 } from "./bookingDb";
 import { fetchBusyBlocks, createCalendarEvent } from "./feishu";
+import { sendBookingConfirmation } from "./email";
 import { TRPCError } from "@trpc/server";
 
 // Helper: Get start and end of week (Monday to Sunday) for a given timestamp
@@ -248,6 +249,19 @@ export const appRouter = router({
           );
         }
 
+        // Send confirmation email
+        try {
+          await sendBookingConfirmation({
+            userEmail: user.email,
+            userName: user.nickname,
+            startTime: new Date(input.startTime),
+            endTime: new Date(endTime),
+          });
+        } catch (error) {
+          console.error('[Booking] Failed to send confirmation email:', error);
+          // Don't fail the booking if email fails
+        }
+
         return {
           success: true,
           bookingId,
@@ -326,6 +340,7 @@ export const appRouter = router({
         z.object({
           mobileNumber: z.string(),
           nickname: z.string(),
+          email: z.string().email(),
           bulkCredits: z.number().default(0),
         })
       )
@@ -341,6 +356,7 @@ export const appRouter = router({
           mobileNumber: input.mobileNumber,
           accessSlug,
           nickname: input.nickname,
+          email: input.email,
           bulkCredits: input.bulkCredits,
           unlimitedExpiry: null,
         });
