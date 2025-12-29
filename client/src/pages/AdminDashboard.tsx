@@ -285,8 +285,9 @@ export default function AdminDashboard() {
                   <div className="flex items-start justify-between">
                     <div>
                       <CardTitle className="text-lg">{user.nickname}</CardTitle>
-                      <CardDescription className="mt-1">
-                        手机号：{user.mobileNumber}
+                      <CardDescription className="mt-1 space-y-1">
+                        <div>手机号：{user.mobileNumber}</div>
+                        <div>邮箱：{user.email}</div>
                       </CardDescription>
                     </div>
                     <Button

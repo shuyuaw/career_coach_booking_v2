@@ -88,3 +88,6 @@
 - [x] Implement email sending service using nodemailer
 - [x] Send booking confirmation email after successful booking
 - [x] Test email delivery
+
+## Admin Dashboard Enhancement
+- [x] Display user email addresses in admin dashboard user list
