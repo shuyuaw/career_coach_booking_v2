@@ -99,3 +99,8 @@
 - [x] Send booking confirmation email to coach (sw2703@icloud.com) in addition to customer
 - [x] Implement cancellation email notification for customers
 - [x] Send cancellation email to coach (sw2703@icloud.com) when booking is cancelled
+
+## Email Sender Migration
+- [x] Update GMAIL_USER to ywlconnie@gmail.com
+- [x] Update GMAIL_APP_PASSWORD with new credentials
+- [x] Test email sending with new account
