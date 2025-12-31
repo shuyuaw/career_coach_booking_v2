@@ -172,13 +172,11 @@ export default function HomePage() {
               如果你正面临选择的困惑，欢迎扫码加我微信，聊聊你的现状。
             </p>
             <div className="bg-white rounded-xl p-8 inline-block">
-              <div className="w-64 h-64 bg-slate-200 rounded-lg flex items-center justify-center">
-                <p className="text-slate-500 text-center px-4">
-                  微信二维码
-                  <br />
-                  <span className="text-sm">(请提供二维码图片)</span>
-                </p>
-              </div>
+              <img
+                src="/wechat-qr.jpg"
+                alt="康妮微信二维码"
+                className="w-64 h-64 object-contain rounded-lg"
+              />
               <p className="text-slate-600 mt-4 text-sm">
                 添加时请备注"职业教练咨询"
               </p>

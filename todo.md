@@ -104,3 +104,8 @@
 - [x] Update GMAIL_USER to ywlconnie@gmail.com
 - [x] Update GMAIL_APP_PASSWORD with new credentials
 - [x] Test email sending with new account
+
+## WeChat QR Code Integration
+- [x] Crop QR code from uploaded image (remove header and footer text)
+- [x] Save cropped QR code to project public directory
+- [x] Update homepage to display WeChat QR code in contact section
