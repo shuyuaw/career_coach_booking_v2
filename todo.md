@@ -109,3 +109,7 @@
 - [x] Crop QR code from uploaded image (remove header and footer text)
 - [x] Save cropped QR code to project public directory
 - [x] Update homepage to display WeChat QR code in contact section
+
+## WeChat QR Code Refinement
+- [x] Re-crop QR code to remove top edge and bottom gray text
+- [x] Verify cropped QR code displays correctly
