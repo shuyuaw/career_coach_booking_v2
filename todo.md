@@ -129,3 +129,6 @@
 - [x] Add testimonials section to homepage with 4 client reviews
 - [x] Design testimonials layout with professional styling
 - [x] Include client role/company information with each testimonial
+
+## Coach Email Address Update
+- [x] Change coach email from sw2703@icloud.com to ywlconnie@icloud.com in all email notifications

@@ -46,7 +46,7 @@ export async function sendBookingConfirmation(data: BookingConfirmationData): Pr
   const mailOptions = {
     from: `"Connie Yu 职业教练" <${env.GMAIL_USER}>`,
     to: userEmail,
-    cc: "sw2703@icloud.com", // Also send to coach
+    cc: "ywlconnie@icloud.com", // Also send to coach
     subject: "预约确认 - 职业教练约谈",
     html: `
       <!DOCTYPE html>
@@ -224,7 +224,7 @@ export async function sendBookingCancellation(data: BookingCancellationData): Pr
   const mailOptions = {
     from: `"Connie Yu 职业教练" <${env.GMAIL_USER}>`,
     to: userEmail,
-    cc: "sw2703@icloud.com", // Also send to coach
+    cc: "ywlconnie@icloud.com", // Also send to coach
     subject: "预约取消通知 - 职业教练约谈",
     html: `
       <!DOCTYPE html>
