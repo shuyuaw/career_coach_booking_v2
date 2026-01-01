@@ -140,3 +140,6 @@
 ## Section Reordering
 - [x] Delete standalone "适合人群" section
 - [x] Move contact section before testimonials section
+
+## Restore Target Audience Section
+- [x] Restore "适合人群" section between core services and contact sections
