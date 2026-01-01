@@ -274,9 +274,9 @@ export default function HomePage() {
               联系方式
             </h2>
             <p className="text-xl text-slate-300 mb-8 leading-relaxed">
-              职业转型是一段孤独的旅程，你不必独自前行。
+              转型路上的每一次抉择，都值得更专业的陪伴。
               <br />
-              如果你正面临选择的困惑，欢迎扫码加我微信，聊聊你的现状。
+              欢迎添加我的微信，让我们一起穿透迷雾，找回内心的定力与前行的方向。
             </p>
             <div className="bg-white rounded-xl p-8 inline-block">
               <img
