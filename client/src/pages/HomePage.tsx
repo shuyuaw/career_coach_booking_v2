@@ -124,7 +124,7 @@ export default function HomePage() {
                 职业转型
               </h3>
               <p className="text-slate-600 leading-relaxed">
-                结合个人驱动力深度拆解，为您定制高效的转型路径，减少试错。
+                结合LUXX驱动力深度分析，为您定制高效的转型路径，减少试错。
               </p>
             </div>
 
@@ -135,10 +135,10 @@ export default function HomePage() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-4">
-                职业兴趣深度发掘
+                找到热爱
               </h3>
               <p className="text-slate-600 leading-relaxed">
-                不只是做测试，而是深入探索你的核心价值观与热爱，识别那些被忽视的"天赋闪光点"。
+                结合LUXX驱动力测试，深入探索你的核心价值观与热爱，识别那些被忽视的"天赋闪光点"。
               </p>
             </div>
 
@@ -149,7 +149,7 @@ export default function HomePage() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-4">
-                管理心智成长
+                持续成长
               </h3>
               <p className="text-slate-600 leading-relaxed">
                 助力初级管理者完成从"执行"到"驱动"的心态转变，处理职场复杂人际与管理焦虑。
