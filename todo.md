@@ -143,3 +143,6 @@
 
 ## Restore Target Audience Section
 - [x] Restore "适合人群" section between core services and contact sections
+
+## Contact Section Background Update
+- [x] Change contact section background from dark (slate-900) to light inviting color scheme

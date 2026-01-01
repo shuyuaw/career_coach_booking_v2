@@ -239,13 +239,13 @@ export default function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section className="bg-slate-900 text-white py-16">
+      <section className="bg-gradient-to-b from-blue-50 to-white py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
               联系方式
             </h2>
-            <p className="text-xl text-slate-300 mb-8 leading-relaxed">
+            <p className="text-xl text-slate-600 mb-8 leading-relaxed">
               转型路上的每一次抉择，都值得更专业的陪伴。
               <br />
               欢迎添加我的微信，让我们一起穿透迷雾，找回内心的定力与前行的方向。
