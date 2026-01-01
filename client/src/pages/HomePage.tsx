@@ -121,11 +121,28 @@ export default function HomePage() {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-4">
-                跨行转岗战略咨询
+                职业转型
               </h3>
-              <p className="text-slate-600 leading-relaxed">
-                针对资深人士的"高昂转型成本"，设计稳健的转岗路径，实现专业能力的迁移与溢价。
+              <p className="text-slate-600 leading-relaxed mb-4">
+                结合个人驱动力深度拆解，为您定制高效的转型路径，减少试错。
               </p>
+              <p className="text-sm font-semibold text-slate-700 mb-3">
+                适合人群
+              </p>
+              <ul className="text-sm text-slate-600 space-y-2 leading-relaxed">
+                <li>
+                  <span className="font-medium text-slate-700">个人岗转管理：</span> 精通做事但管人就卡壳，渴望打破执行天花板、提升领导力的专业人才。
+                </li>
+                <li>
+                  <span className="font-medium text-slate-700">全职妈妈重返职场：</span> 拒绝断档贬值，告别"重返"焦虑，将家庭管理经验迁移输出，助你重回职场高地并实现价值翻倍。
+                </li>
+                <li>
+                  <span className="font-medium text-slate-700">寒冬赛道切换：</span> 身处下行行业，急需撕掉旧标签、将核心能力迁移至高价值赛道的突围者。
+                </li>
+                <li>
+                  <span className="font-medium text-slate-700">斜杠/副业探索：</span> 不满于单一收入，试图挖掘第二曲线并实现商业化闭环的行动派。
+                </li>
+              </ul>
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
