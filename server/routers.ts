@@ -50,7 +50,6 @@ function generateAvailableSlots(
 ): number[] {
   const slots: number[] = [];
   const now = Date.now();
-  const twentyFourHoursFromNow = now + 24 * 60 * 60 * 1000;
 
   // Generate slots from 9 AM to 8 PM (last slot starts at 8 PM)
   // Parse the date components from startDate and create UTC timestamp for China timezone (UTC+8)
@@ -76,8 +75,8 @@ function generateAvailableSlots(
     const slotStart = current.getTime();
     const slotEnd = slotStart + 60 * 60 * 1000; // 60 minutes
 
-    // Skip if slot is in the past or within 24 hours
-    if (slotStart < twentyFourHoursFromNow) {
+    // Skip if slot is in the past
+    if (slotStart < now) {
       current.setUTCHours(current.getUTCHours() + 1);
       continue;
     }
