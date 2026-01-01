@@ -55,55 +55,59 @@ export async function getBusySlots(startDate: number, endDate: number): Promise<
       return [];
     }
 
+    // Find the specified calendar
+    const calendarName = process.env.CALDAV_CALENDAR_NAME;
+    const calendar = findCalendar(calendars, calendarName);
+
+    console.log(`[CalDAV] Reading busy slots from calendar: ${calendar.displayName}`);
+
     const busySlots: BusySlot[] = [];
 
-    // Query each calendar for events in the date range
-    for (const calendar of calendars) {
-      const objects = await davClient.fetchCalendarObjects({
-        calendar: calendar,
-        timeRange: {
-          start: new Date(startDate).toISOString(),
-          end: new Date(endDate).toISOString(),
-        },
-      });
+    // Query only the specified calendar for events in the date range
+    const objects = await davClient.fetchCalendarObjects({
+      calendar: calendar,
+      timeRange: {
+        start: new Date(startDate).toISOString(),
+        end: new Date(endDate).toISOString(),
+      },
+    });
 
-      // Parse each calendar object
-      for (const obj of objects) {
-        if (!obj.data) continue;
+    // Parse each calendar object
+    for (const obj of objects) {
+      if (!obj.data) continue;
 
-        // Parse iCalendar data
-        const lines = obj.data.split('\n');
-        let inEvent = false;
-        let dtStart: string | null = null;
-        let dtEnd: string | null = null;
-        let summary: string | null = null;
+      // Parse iCalendar data
+      const lines = obj.data.split('\n');
+      let inEvent = false;
+      let dtStart: string | null = null;
+      let dtEnd: string | null = null;
+      let summary: string | null = null;
 
-        for (const line of lines) {
-          const trimmed = line.trim();
+      for (const line of lines) {
+        const trimmed = line.trim();
 
-          if (trimmed === 'BEGIN:VEVENT') {
-            inEvent = true;
-            dtStart = null;
-            dtEnd = null;
-            summary = null;
-          } else if (trimmed === 'END:VEVENT' && inEvent) {
-            if (dtStart && dtEnd) {
-              busySlots.push({
-                start: parseICalDate(dtStart),
-                end: parseICalDate(dtEnd),
-                summary: summary || undefined,
-              });
-            }
+        if (trimmed === 'BEGIN:VEVENT') {
+          inEvent = true;
+          dtStart = null;
+          dtEnd = null;
+          summary = null;
+        } else if (trimmed === 'END:VEVENT' && inEvent) {
+          if (dtStart && dtEnd) {
+            busySlots.push({
+              start: parseICalDate(dtStart),
+              end: parseICalDate(dtEnd),
+              summary: summary || undefined,
+            });
+          }
 
-            inEvent = false;
-          } else if (inEvent) {
-            if (trimmed.startsWith('DTSTART')) {
-              dtStart = trimmed.split(':')[1] || null;
-            } else if (trimmed.startsWith('DTEND')) {
-              dtEnd = trimmed.split(':')[1] || null;
-            } else if (trimmed.startsWith('SUMMARY:')) {
-              summary = trimmed.substring(8);
-            }
+          inEvent = false;
+        } else if (inEvent) {
+          if (trimmed.startsWith('DTSTART')) {
+            dtStart = trimmed.split(':')[1] || null;
+          } else if (trimmed.startsWith('DTEND')) {
+            dtEnd = trimmed.split(':')[1] || null;
+          } else if (trimmed.startsWith('SUMMARY:')) {
+            summary = trimmed.substring(8);
           }
         }
       }
@@ -259,29 +263,33 @@ export async function deleteBookingEvent(eventUid: string): Promise<void> {
       throw new Error('No calendars found');
     }
 
-    // Search for the event across all calendars
-    for (const calendar of calendars) {
-      const objects = await davClient.fetchCalendarObjects({
-        calendar: calendar,
-      });
+    // Find the specified calendar
+    const calendarName = process.env.CALDAV_CALENDAR_NAME;
+    const calendar = findCalendar(calendars, calendarName);
 
-      for (const obj of objects) {
-        if (!obj.data || !obj.url) continue;
+    console.log(`[CalDAV] Searching for event in calendar: ${calendar.displayName}`);
 
-        // Check if this object contains the event with matching UID
-        if (obj.data.includes(`UID:${eventUid}`)) {
-          // Delete the calendar object
-          await davClient.deleteCalendarObject({
-            calendarObject: obj,
-          });
+    // Search for the event in the specified calendar only
+    const objects = await davClient.fetchCalendarObjects({
+      calendar: calendar,
+    });
 
-          console.log(`[CalDAV] Deleted booking event with UID: ${eventUid}`);
-          return;
-        }
+    for (const obj of objects) {
+      if (!obj.data || !obj.url) continue;
+
+      // Check if this object contains the event with matching UID
+      if (obj.data.includes(`UID:${eventUid}`)) {
+        // Delete the calendar object
+        await davClient.deleteCalendarObject({
+          calendarObject: obj,
+        });
+
+        console.log(`[CalDAV] Deleted booking event with UID: ${eventUid}`);
+        return;
       }
     }
 
-    console.warn(`[CalDAV] Event with UID ${eventUid} not found in any calendar`);
+    console.warn(`[CalDAV] Event with UID ${eventUid} not found in calendar "${calendar.displayName}"`);
   } catch (error) {
     console.error('[CalDAV] Error deleting booking event:', error);
     throw new Error('Failed to delete calendar event');

@@ -178,3 +178,8 @@
 - [x] Create script to list all available calendars
 - [ ] Request CALDAV_CALENDAR_NAME secret from user
 - [ ] Test calendar selection with current account
+
+## Calendar Scope Optimization
+- [x] Modify getBusySlots() to only read from specified calendar (not all calendars)
+- [x] Modify deleteBookingEvent() to only search in specified calendar (not all calendars)
+- [x] Test updated logic to ensure subscribed calendars don't interfere with availability
