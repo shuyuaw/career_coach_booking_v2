@@ -60,6 +60,7 @@ export async function getBusySlots(startDate: number, endDate: number): Promise<
     const calendar = findCalendar(calendars, calendarName);
 
     console.log(`[CalDAV] Reading busy slots from calendar: ${calendar.displayName}`);
+    console.log(`[CalDAV] Date range: ${new Date(startDate).toISOString()} to ${new Date(endDate).toISOString()}`);
 
     const busySlots: BusySlot[] = [];
 
@@ -72,6 +73,8 @@ export async function getBusySlots(startDate: number, endDate: number): Promise<
       },
     });
 
+    console.log(`[CalDAV] Fetched ${objects.length} calendar objects from CalDAV`);
+    
     // Parse each calendar object
     for (const obj of objects) {
       if (!obj.data) continue;
@@ -93,19 +96,26 @@ export async function getBusySlots(startDate: number, endDate: number): Promise<
           summary = null;
         } else if (trimmed === 'END:VEVENT' && inEvent) {
           if (dtStart && dtEnd) {
+            const startTime = parseICalDate(dtStart);
+            const endTime = parseICalDate(dtEnd);
+            console.log(`[CalDAV] Parsed event: "${summary || 'No title'}" | Start: ${new Date(startTime).toISOString()} | End: ${new Date(endTime).toISOString()}`);
             busySlots.push({
-              start: parseICalDate(dtStart),
-              end: parseICalDate(dtEnd),
+              start: startTime,
+              end: endTime,
               summary: summary || undefined,
             });
+          } else {
+            console.log(`[CalDAV] Skipped event (missing dates): "${summary || 'No title'}" | dtStart=${dtStart} | dtEnd=${dtEnd}`);
           }
 
           inEvent = false;
         } else if (inEvent) {
           if (trimmed.startsWith('DTSTART')) {
-            dtStart = trimmed.split(':')[1] || null;
+            const parts = trimmed.split(':');
+            dtStart = parts.slice(1).join(':') || null;
           } else if (trimmed.startsWith('DTEND')) {
-            dtEnd = trimmed.split(':')[1] || null;
+            const parts = trimmed.split(':');
+            dtEnd = parts.slice(1).join(':') || null;
           } else if (trimmed.startsWith('SUMMARY:')) {
             summary = trimmed.substring(8);
           }
@@ -127,24 +137,35 @@ export async function getBusySlots(startDate: number, endDate: number): Promise<
  * - YYYYMMDDTHHMMSS (local time, no Z - assumes China timezone UTC+8)
  */
 function parseICalDate(dateStr: string): number {
-  const isUTC = dateStr.endsWith('Z');
-  const cleaned = dateStr.replace(/[TZ]/g, '');
+  try {
+    const isUTC = dateStr.endsWith('Z');
+    const cleaned = dateStr.replace(/[TZ]/g, '');
 
-  const year = parseInt(cleaned.substring(0, 4));
-  const month = parseInt(cleaned.substring(4, 6)) - 1; // Month is 0-indexed
-  const day = parseInt(cleaned.substring(6, 8));
-  const hour = parseInt(cleaned.substring(8, 10));
-  const minute = parseInt(cleaned.substring(10, 12));
-  const second = parseInt(cleaned.substring(12, 14));
+    const year = parseInt(cleaned.substring(0, 4));
+    const month = parseInt(cleaned.substring(4, 6)) - 1; // Month is 0-indexed
+    const day = parseInt(cleaned.substring(6, 8));
+    const hour = parseInt(cleaned.substring(8, 10)) || 0;
+    const minute = parseInt(cleaned.substring(10, 12)) || 0;
+    const second = parseInt(cleaned.substring(12, 14)) || 0;
 
-  if (isUTC) {
-    // UTC time (ends with Z) - use as is
-    return new Date(Date.UTC(year, month, day, hour, minute, second)).getTime();
-  } else {
-    // Local time (no Z) - assume China timezone (UTC+8)
-    // Subtract 8 hours to convert to UTC
-    const utcTimestamp = new Date(Date.UTC(year, month, day, hour, minute, second)).getTime();
-    return utcTimestamp - 8 * 60 * 60 * 1000;
+    if (isNaN(year) || isNaN(month) || isNaN(day)) {
+      console.error(`[CalDAV] Invalid date components in: "${dateStr}" -> year=${year}, month=${month}, day=${day}`);
+      throw new Error(`Invalid date format: ${dateStr}`);
+    }
+
+    if (isUTC) {
+      // UTC time (ends with Z) - use as is
+      return new Date(Date.UTC(year, month, day, hour, minute, second)).getTime();
+    } else {
+      // Local time (no Z) - assume China timezone (UTC+8)
+      // The time is in local timezone, so we need to subtract 8 hours to get UTC
+      const localTimestamp = new Date(Date.UTC(year, month, day, hour, minute, second)).getTime();
+      // Since the time represents UTC+8, subtract 8 hours to get actual UTC
+      return localTimestamp - 8 * 60 * 60 * 1000;
+    }
+  } catch (error) {
+    console.error(`[CalDAV] Error parsing date "${dateStr}":`, error);
+    throw error;
   }
 }
 

@@ -125,14 +125,17 @@ export const appRouter = router({
     // Prefetch busy slots for the next 30 days (for caching)
     prefetchBusySlots: publicProcedure
       .query(async () => {
-        const now = Date.now();
-        const thirtyDaysLater = now + 30 * 24 * 60 * 60 * 1000;
+        // Start from today 00:00:00 in local timezone
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const startTime = today.getTime();
+        const thirtyDaysLater = startTime + 30 * 24 * 60 * 60 * 1000;
         
         console.log('[Prefetch] Fetching busy slots for next 30 days...');
-        const busySlots = await getBusySlots(now, thirtyDaysLater);
+        const busySlots = await getBusySlots(startTime, thirtyDaysLater);
         
         // Cache the result
-        setCachedBusySlots(now, thirtyDaysLater, busySlots);
+        setCachedBusySlots(startTime, thirtyDaysLater, busySlots);
         
         console.log(`[Prefetch] Cached ${busySlots.length} busy slots`);
         return { success: true, cachedSlots: busySlots.length };

@@ -207,3 +207,10 @@
 - [x] Identify connection issues with new account
 - [x] Fix any authentication or calendar access problems
 - [x] Successfully migrated to ywlconnie@gmail.com account with Connie calendar
+
+## Bug: Event Not Detected as Busy Slot
+- [x] Diagnose why "雅婷播客" event on Jan 2, 10:30-11:30 is not detected
+- [x] Check if event is being fetched from calendar
+- [x] Check if event time parsing is correct
+- [x] Fix the issue and verify slots are properly blocked
+- [x] Root cause: prefetchBusySlots used Date.now() instead of today 00:00:00
