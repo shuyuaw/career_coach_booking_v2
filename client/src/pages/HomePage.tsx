@@ -124,7 +124,7 @@ export default function HomePage() {
                 职业转型
               </h3>
               <p className="text-slate-600 leading-relaxed">
-                结合LUXX驱动力深度分析，为您定制高效的转型路径，减少试错。
+                结合LUXX驱动力深度分析，为你定制高效的转型路径，减少试错。
               </p>
             </div>
 
