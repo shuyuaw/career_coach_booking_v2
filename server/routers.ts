@@ -18,7 +18,7 @@ import {
   getBookingById,
   getAllUserBookings,
 } from "./bookingDb";
-import { fetchBusyBlocks, createCalendarEvent } from "./feishu";
+import { getBusySlots, createBookingEvent } from "./caldav";
 import { sendBookingConfirmation, sendBookingCancellation } from "./email";
 import { TRPCError } from "@trpc/server";
 
@@ -134,7 +134,8 @@ export const appRouter = router({
         const [year, month, day] = input.date.split('-').map(Number);
         const startDate = new Date(year, month - 1, day, 0, 0, 0, 0);
         const endDate = new Date(year, month - 1, day, 23, 59, 59, 999);
-        const busyBlocks = await fetchBusyBlocks(startDate, endDate);
+        const busySlots = await getBusySlots(startDate.getTime(), endDate.getTime());
+        const busyBlocks = busySlots.map(slot => ({ startTime: slot.start, endTime: slot.end }));
 
         const slots = generateAvailableSlots(startDate, endDate, busyBlocks);
 
@@ -199,14 +200,12 @@ export const appRouter = router({
         const tencentMeetingUrl = process.env.TENCENT_MEETING_URL || "";
         
         try {
-          await createCalendarEvent({
-            uid: bookingId,
-            summary: `[教练约谈] ${user.nickname}`,
-            startTime: input.startTime,
+          await createBookingEvent(
+            input.startTime,
             endTime,
-            location: tencentMeetingUrl,
-            description: `剩余课时: ${creditType === "bulk" ? user.bulkCredits - 1 : "无限制"}`,
-          });
+            user.nickname,
+            tencentMeetingUrl
+          );
         } catch (error) {
           console.error('[Booking] Failed to create calendar event:', error);
           throw new TRPCError({

@@ -150,3 +150,11 @@
 ## Final Layout Adjustments
 - [x] Move contact section after testimonials section
 - [x] Change "我们的教练服务" to "我的教练服务" in target audience section
+
+## Apple Calendar Migration
+- [x] Replace Feishu calendar integration with Apple Calendar (CalDAV)
+- [x] Create new caldav.ts module based on reference implementation
+- [x] Update routers.ts to use Apple Calendar functions
+- [x] Install tsdav package for CalDAV protocol support
+- [x] Request required Apple Calendar credentials (CALDAV_URL, CALDAV_USERNAME, CALDAV_PASSWORD)
+- [x] Test CalDAV connection and calendar access
