@@ -167,7 +167,7 @@ export default function HomePage() {
               适合人群
             </h2>
             <p className="text-lg text-slate-600 text-center mb-12">
-              如果你正处于这些场景，我们的教练服务能帮助你
+              如果你正处于这些场景，我的教练服务能帮助你
             </p>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-6 border border-blue-100">
@@ -233,32 +233,6 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section className="bg-gradient-to-b from-blue-50 to-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-              联系方式
-            </h2>
-            <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-              转型路上的每一次抉择，都值得更专业的陪伴。
-              <br />
-              欢迎添加我的微信，让我们一起穿透迷雾，找回内心的定力与前行的方向。
-            </p>
-            <div className="bg-white rounded-xl p-8 inline-block">
-              <img
-                src="/wechat-qr.jpg"
-                alt="Connie微信二维码"
-                className="w-64 h-64 object-contain rounded-lg"
-              />
-              <p className="text-slate-600 mt-4 text-sm">
-                添加时请备注“职业教练咨询”
-              </p>
             </div>
           </div>
         </div>
@@ -366,6 +340,32 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="bg-gradient-to-b from-blue-50 to-white py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+              联系方式
+            </h2>
+            <p className="text-xl text-slate-600 mb-8 leading-relaxed">
+              转型路上的每一次抉择，都值得更专业的陪伴。
+              <br />
+              欢迎添加我的微信，让我们一起穿透迷雾，找回内心的定力与前行的方向。
+            </p>
+            <div className="bg-white rounded-xl p-8 inline-block">
+              <img
+                src="/wechat-qr.jpg"
+                alt="Connie微信二维码"
+                className="w-64 h-64 object-contain rounded-lg"
+              />
+              <p className="text-slate-600 mt-4 text-sm">
+                添加时请备注“职业教练咨询”
+              </p>
             </div>
           </div>
         </div>
