@@ -162,13 +162,14 @@ function generateUID(): string {
  * @param endTime Session end time (Unix timestamp in milliseconds)
  * @param userName User's name or nickname
  * @param meetingUrl Tencent Meeting URL
+ * @returns The UID of the created calendar event
  */
 export async function createBookingEvent(
   startTime: number,
   endTime: number,
   userName: string,
   meetingUrl: string
-): Promise<void> {
+): Promise<string> {
   try {
     const davClient = await getClient();
 
@@ -212,8 +213,53 @@ export async function createBookingEvent(
     });
 
     console.log(`[CalDAV] Created booking event for ${userName} at ${new Date(startTime).toISOString()}`);
+    return uid;
   } catch (error) {
     console.error('[CalDAV] Error creating booking event:', error);
     throw new Error('Failed to create calendar event');
+  }
+}
+
+/**
+ * Delete a booking event from Apple Calendar.
+ * @param eventUid The UID of the calendar event to delete
+ */
+export async function deleteBookingEvent(eventUid: string): Promise<void> {
+  try {
+    const davClient = await getClient();
+
+    // Fetch calendars
+    const calendars = await davClient.fetchCalendars();
+
+    if (!calendars || calendars.length === 0) {
+      throw new Error('No calendars found');
+    }
+
+    // Search for the event across all calendars
+    for (const calendar of calendars) {
+      const objects = await davClient.fetchCalendarObjects({
+        calendar: calendar,
+      });
+
+      for (const obj of objects) {
+        if (!obj.data || !obj.url) continue;
+
+        // Check if this object contains the event with matching UID
+        if (obj.data.includes(`UID:${eventUid}`)) {
+          // Delete the calendar object
+          await davClient.deleteCalendarObject({
+            calendarObject: obj,
+          });
+
+          console.log(`[CalDAV] Deleted booking event with UID: ${eventUid}`);
+          return;
+        }
+      }
+    }
+
+    console.warn(`[CalDAV] Event with UID ${eventUid} not found in any calendar`);
+  } catch (error) {
+    console.error('[CalDAV] Error deleting booking event:', error);
+    throw new Error('Failed to delete calendar event');
   }
 }

@@ -163,3 +163,10 @@
 - [x] Remove 24-hour booking restriction from generateAvailableSlots function
 - [x] Verify caldav.ts only handles calendar operations, not business rules
 - [x] Restore original business logic (only skip past slots, not 24-hour advance requirement)
+
+## Calendar Event Deletion on Cancellation
+- [x] Implement deleteBookingEvent function in caldav.ts
+- [x] Update cancelBooking mutation to delete calendar event when booking is cancelled
+- [x] Store calendar event UID in bookings table for deletion reference
+- [x] Add calendarEventUid field to bookings table schema
+- [x] Update createBooking to capture and store calendar event UID

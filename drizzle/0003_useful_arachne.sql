@@ -1,0 +1,1 @@
+ALTER TABLE `bookings` ADD `calendar_event_uid` varchar(255);

@@ -48,6 +48,7 @@ export const bookings = mysqlTable("bookings", {
   endTime: bigint("end_time", { mode: "number" }).notNull(), // UTC timestamp in milliseconds (start_time + 60 minutes)
   status: mysqlEnum("status", ["active", "cancelled"]).default("active").notNull(),
   creditTypeUsed: mysqlEnum("credit_type_used", ["bulk", "unlimited"]).notNull(),
+  calendarEventUid: varchar("calendar_event_uid", { length: 255 }), // UID of the calendar event for deletion
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });

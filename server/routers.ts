@@ -18,7 +18,7 @@ import {
   getBookingById,
   getAllUserBookings,
 } from "./bookingDb";
-import { getBusySlots, createBookingEvent } from "./caldav";
+import { getBusySlots, createBookingEvent, deleteBookingEvent } from "./caldav";
 import { sendBookingConfirmation, sendBookingCancellation } from "./email";
 import { TRPCError } from "@trpc/server";
 
@@ -198,8 +198,9 @@ export const appRouter = router({
         const bookingId = nanoid();
         const tencentMeetingUrl = process.env.TENCENT_MEETING_URL || "";
         
+        let calendarEventUid: string;
         try {
-          await createBookingEvent(
+          calendarEventUid = await createBookingEvent(
             input.startTime,
             endTime,
             user.nickname,
@@ -221,6 +222,7 @@ export const appRouter = router({
           endTime,
           status: "active",
           creditTypeUsed: creditType,
+          calendarEventUid,
         });
 
         // Deduct bulk credit if applicable
@@ -285,6 +287,16 @@ export const appRouter = router({
         const user = await getBookingUserByMobile(input.userId);
         if (!user) {
           throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+        }
+
+        // Delete calendar event if UID exists
+        if (booking.calendarEventUid) {
+          try {
+            await deleteBookingEvent(booking.calendarEventUid);
+          } catch (error) {
+            console.error('[Booking] Failed to delete calendar event:', error);
+            // Don't fail the cancellation if calendar deletion fails
+          }
         }
 
         // Cancel booking
