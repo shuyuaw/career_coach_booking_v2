@@ -53,10 +53,13 @@ function generateAvailableSlots(
   const now = Date.now();
 
   // Generate slots from 9 AM to 8 PM (last slot starts at 8 PM)
-  // Parse the date components from startDate and create UTC timestamp for China timezone (UTC+8)
-  const year = startDate.getFullYear();
-  const month = startDate.getMonth();
-  const day = startDate.getDate();
+  // startDate is already in UTC (China midnight - 8 hours)
+  // Add 8 hours to get China date, then extract components
+  const chinaDate = new Date(startDate.getTime() + 8 * 60 * 60 * 1000);
+  const year = chinaDate.getUTCFullYear();
+  const month = chinaDate.getUTCMonth();
+  const day = chinaDate.getUTCDate();
+  
   // China time 09:00 = UTC 01:00 (because UTC+8)
   const current = new Date(Date.UTC(year, month, day, 1, 0, 0, 0));
   // China time 20:00 = UTC 12:00, so last slot ends at UTC 13:00
@@ -149,10 +152,11 @@ export const appRouter = router({
         })
       )
       .query(async ({ input }) => {
-        // Parse date in local timezone (Asia/Shanghai)
+        // Parse date in China timezone (UTC+8)
         const [year, month, day] = input.date.split('-').map(Number);
-        const startDate = new Date(year, month - 1, day, 0, 0, 0, 0);
-        const endDate = new Date(year, month - 1, day, 23, 59, 59, 999);
+        // Create UTC date and subtract 8 hours to get China midnight
+        const startDate = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0) - 8 * 60 * 60 * 1000);
+        const endDate = new Date(Date.UTC(year, month - 1, day, 23, 59, 59, 999) - 8 * 60 * 60 * 1000);
         
         // Try to get from cache first
         let busySlots = getCachedBusySlotsForRange(startDate.getTime(), endDate.getTime());
@@ -164,8 +168,11 @@ export const appRouter = router({
           // Cache this single day query too
           setCachedBusySlots(startDate.getTime(), endDate.getTime(), busySlots);
         }
+        const busyBlocks = busySlots.map((slot) => ({
+          startTime: slot.start,
+          endTime: slot.end,
+        }));
         
-        const busyBlocks = busySlots.map(slot => ({ startTime: slot.start, endTime: slot.end }));
         const slots = generateAvailableSlots(startDate, endDate, busyBlocks);
 
         return { slots };

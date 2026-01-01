@@ -219,3 +219,12 @@
 - [x] Verify all-day events (like "住宿：Sheraton...") block all time slots for the entire day
 - [x] Test Jan 3-6 availability (should be completely blocked)
 - [x] Confirmed working correctly: Jan 3-5 fully blocked, Jan 6 available after 00:00 (event ends at Jan 6 00:00)
+
+## Bug: Frontend Shows Available Slots on Jan 3
+- [x] Investigate why frontend displays available slots on Jan 3 when API returns 0 slots
+- [x] Check if frontend is using cached data
+- [x] Verify frontend calls the correct API endpoint
+- [x] Fix the discrepancy and ensure frontend matches backend
+- [x] Root cause: busySlotsCache filtering logic was too strict (required event.start >= range.start AND event.end <= range.end)
+- [x] Fixed: Changed filter to detect overlapping events (event.start < range.end AND event.end > range.start)
+- [x] Verified: Jan 2 shows 10 slots (missing 10:00, 11:00), Jan 3-5 show 0 slots, Jan 6 shows 4 slots (09:00, 17:00-19:00)

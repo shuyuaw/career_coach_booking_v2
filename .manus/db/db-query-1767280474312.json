@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO booking_users (mobile_number, nickname, access_slug, bulk_credits, unlimited_expiry, email)\nVALUES ('test123', 'Test User', 'test123', 10, NULL, 'test@example.com')\nON DUPLICATE KEY UPDATE nickname='Test User';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2C3PRYztej175k5.fc18905ccbe1 --database inkPCLizzTv9MTUcRxEYef --execute INSERT INTO booking_users (mobile_number, nickname, access_slug, bulk_credits, unlimited_expiry, email)\nVALUES ('test123', 'Test User', 'test123', 10, NULL, 'test@example.com')\nON DUPLICATE KEY UPDATE nickname='Test User';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1568
+}

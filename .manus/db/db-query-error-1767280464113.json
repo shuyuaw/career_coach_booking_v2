@@ -1,0 +1,8 @@
+{
+  "query": "INSERT INTO users (mobile_number, nickname, access_slug, bulk_credits, unlimited_subscription_end, email)\nVALUES ('test123', 'Test User', 'test123', 10, NULL, 'test@example.com')\nON DUPLICATE KEY UPDATE nickname='Test User';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2C3PRYztej175k5.fc18905ccbe1 --database inkPCLizzTv9MTUcRxEYef --execute INSERT INTO users (mobile_number, nickname, access_slug, bulk_credits, unlimited_subscription_end, email)\nVALUES ('test123', 'Test User', 'test123', 10, NULL, 'test@example.com')\nON DUPLICATE KEY UPDATE nickname='Test User';",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'mobile_number' in 'field list'"
+  ]
+}

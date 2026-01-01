@@ -100,9 +100,10 @@ export function getCachedBusySlotsForRange(
     if (cachedStart <= startDate && cachedEnd >= endDate) {
       console.log(`[Cache] PARTIAL HIT - using cached range ${new Date(cachedStart).toISOString()} - ${new Date(cachedEnd).toISOString()}`);
       
-      // Filter busy slots to only return those within requested range
+      // Filter busy slots to return those that overlap with requested range
+      // An event overlaps if: event.start < range.end AND event.end > range.start
       const filteredSlots = entry.busySlots.filter(
-        (slot: BusySlot) => slot.start >= startDate && slot.end <= endDate
+        (slot: BusySlot) => slot.start < endDate && slot.end > startDate
       );
       
       return filteredSlots;
