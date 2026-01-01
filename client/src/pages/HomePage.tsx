@@ -178,11 +178,13 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <p className="text-slate-700 leading-relaxed mb-4">
-                  Connie老师在教练过程中，展现了敏锐的洞察力，并且很擅长引导思考。每次的案例分析中，她都能快速觉察到我的症结，并通过提问引导思考，让我能清楚地找到自己真正需要解决的问题和应对策略。在她的帮助下，我进一步提高了工作中独立思考的能力和专业度，同时也获得了更多部门和合作伙伴的认可。谢谢Connie！
+                  Connie在教练过程中，展现了敏锐的洞察力，并且很擅长引导思考。每次的案例分析中，她都能快速觉察到我的症结，并通过提问引导思考，让我能清楚地找到自己真正需要解决的问题和应对策略。在她的帮助下，我进一步提高了工作中独立思考的能力和专业度，同时也获得了更多部门和合作伙伴的认可。谢谢Connie！
                 </p>
                 <div className="flex items-center">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold">
-                    L
+                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
                   </div>
                   <div className="ml-3">
                     <p className="font-medium text-slate-900">Senior Operation Specialist</p>
@@ -202,8 +204,10 @@ export default function HomePage() {
                   Connie教练以清晰严谨的逻辑思维引导我深入剖析问题本质，帮助我厘清内心的真实声音。在她的支持与指导下，我能够更坚定地做出符合初心的决策，实现自我认知的跃升。
                 </p>
                 <div className="flex items-center">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-semibold">
-                    Z
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
                   </div>
                   <div className="ml-3">
                     <p className="font-medium text-slate-900">制剂总监</p>
@@ -220,11 +224,13 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <p className="text-slate-700 leading-relaxed mb-4">
-                  在教练过程中，于教练持续深入地发问，带我层层剥离表象，精准洞察到我真正的核心需求和深层困惑。几次下来，我对她建立了深深的信任，也真正感受到教练对人生的正向影响。
+                  在教练过程中，Connie教练持续深入地发问，带我层层剥离表象，精准洞察到我真正的核心需求和深层困惑。几次下来，我对她建立了深深的信任，也真正感受到教练对人生的正向影响。
                 </p>
                 <div className="flex items-center">
-                  <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-semibold">
-                    W
+                  <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
                   </div>
                   <div className="ml-3">
                     <p className="font-medium text-slate-900">Scientist</p>
@@ -244,8 +250,10 @@ export default function HomePage() {
                   与Connie近三个月的陪伴和支持是我最棒的体验，她在情感上支持和肯定让我找到了久违的幸福感觉，在理智上的追问和引导又给我另一双眼睛另一个视角，我的世界再次打开了一扇大门，给我意料之外的收获和成长。
                 </p>
                 <div className="flex items-center">
-                  <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 font-semibold">
-                    C
+                  <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
                   </div>
                   <div className="ml-3">
                     <p className="font-medium text-slate-900">Scientist</p>
