@@ -10,9 +10,9 @@ export default function HomePage() {
             找回闪闪发光的自己
           </h1>
           <p className="text-xl md:text-2xl text-slate-600 leading-relaxed">
-            专注于跨行转岗与职业兴趣发掘。通过深度的启发式对话，
+            告别职业焦虑与停滞。 从迷茧到精准行动，通过深度的启发式对话，
             <br className="hidden md:block" />
-            陪你从"职业惯性"中突围，找回工作的自驱力。
+            陪你从“职业惯性”中突围，助你在事业转折点拿回主动权。
           </p>
         </div>
       </section>
@@ -44,7 +44,7 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="mt-6 text-center">
-                  <h3 className="text-2xl font-bold text-slate-900">Connie Yu</h3>
+                  <h3 className="text-2xl font-bold text-slate-900">Connie Yu, PhD</h3>
                   <p className="text-lg text-slate-600 mt-2">于苇凌</p>
                   <p className="text-base text-slate-500 mt-1">ICF教练PCC认证中；LUXXprofile动机分析师认证中；中国心理卫生协会证书</p>
                 </div>
