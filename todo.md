@@ -197,3 +197,7 @@
 - [x] Modify generateAvailableSlots to use cache first
 - [x] Update frontend to call prefetch on page load
 - [x] Test performance improvement
+
+## Fix: Prefetch Blocking Page Load
+- [x] Update prefetch to run asynchronously after page renders
+- [x] Ensure page loads quickly without waiting for prefetch

@@ -24,11 +24,22 @@ export default function BookingPage() {
     { enabled: !!slug }
   );
 
-  // Prefetch busy slots for next 30 days on page load
-  trpc.booking.prefetchBusySlots.useQuery(undefined, {
+  // Prefetch busy slots for next 30 days on page load (async, non-blocking)
+  const prefetchQuery = trpc.booking.prefetchBusySlots.useQuery(undefined, {
+    enabled: false, // Don't run automatically
     staleTime: 5 * 60 * 1000, // 5 minutes
     refetchOnWindowFocus: false,
   });
+
+  // Trigger prefetch after component mounts (non-blocking)
+  useEffect(() => {
+    // Defer prefetch to next tick so page renders first
+    const timer = setTimeout(() => {
+      prefetchQuery.refetch();
+    }, 100); // Small delay to ensure page renders first
+
+    return () => clearTimeout(timer);
+  }, []); // Run once on mount
 
   // Fetch user's bookings
   const { data: bookingsData, refetch: refetchBookings } = trpc.booking.getUserBookings.useQuery(
