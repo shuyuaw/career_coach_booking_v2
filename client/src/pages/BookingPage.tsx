@@ -153,7 +153,7 @@ export default function BookingPage() {
               </div>
             </CardHeader>
             <CardContent className="space-y-3">
-              <p className="text-green-800">您的教练课程已预约成功，请准时参加。</p>
+              <p className="text-green-800">您的教练约谈已预约成功，请准时参加。</p>
               <div className="bg-white p-4 rounded-lg border border-green-200">
                 <p className="text-sm text-gray-600 mb-2">腾讯会议链接：</p>
                 <a
@@ -177,15 +177,15 @@ export default function BookingPage() {
         )}
 
         {/* My Bookings */}
-        {bookingsData && bookingsData.bookings.length > 0 && (
+        {bookingsData && bookingsData.bookings.filter(booking => Number(booking.startTime) > Date.now()).length > 0 && (
           <Card>
             <CardHeader>
               <CardTitle>我的预约</CardTitle>
-              <CardDescription>查看和管理您的课程预约</CardDescription>
+              <CardDescription>查看和管理您的约谈预约</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {bookingsData.bookings.map((booking) => (
+                {bookingsData.bookings.filter(booking => Number(booking.startTime) > Date.now()).map((booking) => (
                   <div
                     key={booking.id}
                     className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border"
@@ -222,7 +222,7 @@ export default function BookingPage() {
         <Card>
           <CardHeader>
             <CardTitle>选择时间</CardTitle>
-            <CardDescription>选择日期和时间段预约您的教练课程（每次60分钟）</CardDescription>
+            <CardDescription>选择日期和时间段预约您的教练约谈（每次60分钟）</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Date Picker */}
@@ -303,10 +303,10 @@ export default function BookingPage() {
           <CardContent className="pt-6">
             <h3 className="font-medium text-blue-900 mb-2">预约须知</h3>
             <ul className="text-sm text-blue-800 space-y-1">
-              <li>• 每次课程时长为60分钟</li>
-              <li>• 需提前24小时预约或取消</li>
-              <li>• 无限制会员每周最多预约3次课程</li>
-              <li>• 课程将通过腾讯会议进行</li>
+              <li>• 每次约谈时长为60分钟</li>
+              <li>• 只要约谈时间晚于现在即可预约或取消</li>
+              <li>• 无限制会员可随时预约约谈</li>
+              <li>• 约谈将通过腾讯会议进行</li>
             </ul>
           </CardContent>
         </Card>

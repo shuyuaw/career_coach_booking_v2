@@ -47,7 +47,7 @@ export async function sendBookingConfirmation(data: BookingConfirmationData): Pr
     from: `"Connie Yu 职业教练" <${env.GMAIL_USER}>`,
     to: userEmail,
     cc: "sw2703@icloud.com", // Also send to coach
-    subject: "预约确认 - 职业教练课程",
+    subject: "预约确认 - 职业教练约谈",
     html: `
       <!DOCTYPE html>
       <html>
@@ -128,12 +128,12 @@ export async function sendBookingConfirmation(data: BookingConfirmationData): Pr
       <body>
         <div class="header">
           <h1>✅ 预约确认</h1>
-          <p style="margin: 10px 0 0 0; opacity: 0.9;">您的职业教练课程已成功预约</p>
+          <p style="margin: 10px 0 0 0; opacity: 0.9;">您的职业教练约谈已成功预约</p>
         </div>
         
         <div class="content">
           <p>亲爱的 <strong>${userName}</strong>，</p>
-          <p>感谢您预约职业教练课程！您的预约已确认，详情如下：</p>
+          <p>感谢您预约职业教练约谈！您的预约已确认，详情如下：</p>
           
           <div class="booking-details">
             <h2>📅 预约详情</h2>
@@ -146,7 +146,7 @@ export async function sendBookingConfirmation(data: BookingConfirmationData): Pr
               <span class="detail-value">${endTimeStr}</span>
             </div>
             <div class="detail-row">
-              <span class="detail-label">课程时长：</span>
+              <span class="detail-label">约谈时长：</span>
               <span class="detail-value">60 分钟</span>
             </div>
             <div class="detail-row">
@@ -168,7 +168,7 @@ export async function sendBookingConfirmation(data: BookingConfirmationData): Pr
           
           <div class="footer">
             <p><strong>Connie Yu 职业教练</strong></p>
-            <p>ICF 认证 ACC 级别教练</p>
+            <p>ICF教练PCC认证中；LUXXprofile动机分析师认证中；中国心理卫生协会证书</p>
             <p style="margin-top: 15px; font-size: 12px; color: #adb5bd;">
               此邮件由系统自动发送，请勿直接回复
             </p>
@@ -225,7 +225,7 @@ export async function sendBookingCancellation(data: BookingCancellationData): Pr
     from: `"Connie Yu 职业教练" <${env.GMAIL_USER}>`,
     to: userEmail,
     cc: "sw2703@icloud.com", // Also send to coach
-    subject: "预约取消通知 - 职业教练课程",
+    subject: "预约取消通知 - 职业教练约谈",
     html: `
       <!DOCTYPE html>
       <html>
@@ -306,12 +306,12 @@ export async function sendBookingCancellation(data: BookingCancellationData): Pr
       <body>
         <div class="header">
           <h1>❌ 预约已取消</h1>
-          <p style="margin: 10px 0 0 0; opacity: 0.9;">您的职业教练课程预约已取消</p>
+          <p style="margin: 10px 0 0 0; opacity: 0.9;">您的职业教练约谈预约已取消</p>
         </div>
         
         <div class="content">
           <p>亲爱的 <strong>${userName}</strong>，</p>
-          <p>您的职业教练课程预约已成功取消，详情如下：</p>
+          <p>您的职业教练约谈预约已成功取消，详情如下：</p>
           
           <div class="booking-details">
             <h2>📅 已取消的预约</h2>
@@ -324,7 +324,7 @@ export async function sendBookingCancellation(data: BookingCancellationData): Pr
               <span class="detail-value">${endTimeStr}</span>
             </div>
             <div class="detail-row">
-              <span class="detail-label">课程时长：</span>
+              <span class="detail-label">约谈时长：</span>
               <span class="detail-value">60 分钟</span>
             </div>
             <div class="detail-row">
@@ -346,7 +346,7 @@ export async function sendBookingCancellation(data: BookingCancellationData): Pr
           
           <div class="footer">
             <p><strong>Connie Yu 职业教练</strong></p>
-            <p>ICF 认证 ACC 级别教练</p>
+            <p>ICF教练PCC认证中；LUXXprofile动机分析师认证中；中国心理卫生协会证书</p>
             <p style="margin-top: 15px; font-size: 12px; color: #adb5bd;">
               此邮件由系统自动发送，请勿直接回复
             </p>

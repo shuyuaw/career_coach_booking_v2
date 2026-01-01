@@ -113,3 +113,14 @@
 ## WeChat QR Code Refinement
 - [x] Re-crop QR code to remove top edge and bottom gray text
 - [x] Verify cropped QR code displays correctly
+
+## Comprehensive System Updates (Jan 2026)
+- [x] Replace all instances of "课程" with "约谈" across web, email, and calendar
+- [x] Remove 24-hour booking/cancellation restriction (allow if appointment time > current time)
+- [x] Remove weekly 3-booking limit for unlimited subscription users
+- [x] Hide past appointments in customer booking interface
+- [x] Update coach credentials: "ICF教练PCC认证中；LUXXprofile动机分析师认证中；中国心理卫生协会证书"
+- [x] Update Tencent Meeting link to https://meeting.tencent.com/p/5146842585
+- [x] Replace homepage photo with new white background photo (connie_white.jpg)
+- [x] Replace all instances of "康妮" with "Connie"
+- [x] Swap order of "职业兴趣深度发掘" and "跨行转岗战略咨询" service cards

@@ -164,13 +164,12 @@ export const appRouter = router({
         }
 
         const now = Date.now();
-        const twentyFourHours = 24 * 60 * 60 * 1000;
 
-        // Enforce 24-hour rule
-        if (input.startTime - now < twentyFourHours) {
+        // Only check if booking time is in the future
+        if (input.startTime <= now) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Cannot book within 24 hours of session start time",
+            message: "Cannot book in the past",
           });
         }
 
@@ -182,21 +181,6 @@ export const appRouter = router({
           user.unlimitedExpiry && user.unlimitedExpiry > now;
 
         if (hasUnlimited) {
-          // Check weekly limit for unlimited users
-          const { weekStart, weekEnd } = getWeekBounds(input.startTime);
-          const weeklyBookings = await getUserWeeklyBookings(
-            input.userId,
-            weekStart,
-            weekEnd
-          );
-
-          if (weeklyBookings.length >= 3) {
-            throw new TRPCError({
-              code: "BAD_REQUEST",
-              message: "Weekly booking limit reached (max 3 sessions per week)",
-            });
-          }
-
           creditType = "unlimited";
         } else {
           // Use bulk credits
@@ -217,7 +201,7 @@ export const appRouter = router({
         try {
           await createCalendarEvent({
             uid: bookingId,
-            summary: `[教练课程] ${user.nickname}`,
+            summary: `[教练约谈] ${user.nickname}`,
             startTime: input.startTime,
             endTime,
             location: tencentMeetingUrl,
@@ -290,13 +274,12 @@ export const appRouter = router({
         }
 
         const now = Date.now();
-        const twentyFourHours = 24 * 60 * 60 * 1000;
 
-        // Enforce 24-hour rule
-        if (booking.startTime - now < twentyFourHours) {
+        // Only allow cancellation if booking is in the future
+        if (booking.startTime <= now) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Cannot cancel within 24 hours of session start time",
+            message: "Cannot cancel past bookings",
           });
         }
 
