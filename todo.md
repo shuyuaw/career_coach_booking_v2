@@ -214,3 +214,8 @@
 - [x] Check if event time parsing is correct
 - [x] Fix the issue and verify slots are properly blocked
 - [x] Root cause: prefetchBusySlots used Date.now() instead of today 00:00:00
+
+## All-Day Event Handling
+- [x] Verify all-day events (like "住宿：Sheraton...") block all time slots for the entire day
+- [x] Test Jan 3-6 availability (should be completely blocked)
+- [x] Confirmed working correctly: Jan 3-5 fully blocked, Jan 6 available after 00:00 (event ends at Jan 6 00:00)
