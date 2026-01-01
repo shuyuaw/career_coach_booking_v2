@@ -201,3 +201,9 @@
 ## Fix: Prefetch Blocking Page Load
 - [x] Update prefetch to run asynchronously after page renders
 - [x] Ensure page loads quickly without waiting for prefetch
+
+## CalDAV Migration Debug
+- [x] Create standalone diagnostic script to test new CalDAV credentials
+- [x] Identify connection issues with new account
+- [x] Fix any authentication or calendar access problems
+- [x] Successfully migrated to ywlconnie@gmail.com account with Connie calendar
