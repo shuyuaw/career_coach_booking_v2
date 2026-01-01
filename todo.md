@@ -132,3 +132,7 @@
 
 ## Coach Email Address Update
 - [x] Change coach email from sw2703@icloud.com to ywlconnie@icloud.com in all email notifications
+
+## Target Audience Section Restructuring
+- [x] Remove "适合人群" from career transition service card
+- [x] Create standalone "适合人群" section between core services and testimonials
