@@ -136,3 +136,7 @@
 ## Target Audience Section Restructuring
 - [x] Remove "适合人群" from career transition service card
 - [x] Create standalone "适合人群" section between core services and testimonials
+
+## Section Reordering
+- [x] Delete standalone "适合人群" section
+- [x] Move contact section before testimonials section
