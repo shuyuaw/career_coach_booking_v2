@@ -266,7 +266,7 @@ export default function HomePage() {
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <p className="font-medium text-slate-900">Senior Operation Specialist</p>
+                    <p className="font-medium text-slate-900">高级运营专家</p>
                     <p className="text-sm text-slate-500">医药外企</p>
                   </div>
                 </div>
@@ -289,7 +289,7 @@ export default function HomePage() {
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <p className="font-medium text-slate-900">制剂总监</p>
+                    <p className="font-medium text-slate-900">研发制剂总监</p>
                     <p className="text-sm text-slate-500">医药公司</p>
                   </div>
                 </div>
@@ -312,7 +312,7 @@ export default function HomePage() {
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <p className="font-medium text-slate-900">Scientist</p>
+                    <p className="font-medium text-slate-900">科学家</p>
                     <p className="text-sm text-slate-500">互联网大厂</p>
                   </div>
                 </div>
@@ -335,7 +335,7 @@ export default function HomePage() {
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <p className="font-medium text-slate-900">Scientist</p>
+                    <p className="font-medium text-slate-900">研发科学家</p>
                     <p className="text-sm text-slate-500">医药公司</p>
                   </div>
                 </div>
