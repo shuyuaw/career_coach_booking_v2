@@ -159,6 +159,105 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section className="bg-gradient-to-b from-white to-slate-50 py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 text-center">
+              客户评价
+            </h2>
+            <p className="text-lg text-slate-600 text-center mb-12">
+              听听他们的故事
+            </p>
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Testimonial 1 */}
+              <div className="bg-white rounded-xl shadow-md p-8 hover:shadow-lg transition-shadow">
+                <div className="flex items-start mb-4">
+                  <svg className="w-8 h-8 text-blue-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                  </svg>
+                </div>
+                <p className="text-slate-700 leading-relaxed mb-4">
+                  Connie老师在教练过程中，展现了敏锐的洞察力，并且很擅长引导思考。每次的案例分析中，她都能快速觉察到我的症结，并通过提问引导思考，让我能清楚地找到自己真正需要解决的问题和应对策略。在她的帮助下，我进一步提高了工作中独立思考的能力和专业度，同时也获得了更多部门和合作伙伴的认可。谢谢Connie！
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold">
+                    L
+                  </div>
+                  <div className="ml-3">
+                    <p className="font-medium text-slate-900">Senior Operation Specialist</p>
+                    <p className="text-sm text-slate-500">医药外企</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Testimonial 2 */}
+              <div className="bg-white rounded-xl shadow-md p-8 hover:shadow-lg transition-shadow">
+                <div className="flex items-start mb-4">
+                  <svg className="w-8 h-8 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                  </svg>
+                </div>
+                <p className="text-slate-700 leading-relaxed mb-4">
+                  Connie教练以清晰严谨的逻辑思维引导我深入剖析问题本质，帮助我厘清内心的真实声音。在她的支持与指导下，我能够更坚定地做出符合初心的决策，实现自我认知的跃升。
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-semibold">
+                    Z
+                  </div>
+                  <div className="ml-3">
+                    <p className="font-medium text-slate-900">制剂总监</p>
+                    <p className="text-sm text-slate-500">医药公司</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Testimonial 3 */}
+              <div className="bg-white rounded-xl shadow-md p-8 hover:shadow-lg transition-shadow">
+                <div className="flex items-start mb-4">
+                  <svg className="w-8 h-8 text-purple-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                  </svg>
+                </div>
+                <p className="text-slate-700 leading-relaxed mb-4">
+                  在教练过程中，于教练持续深入地发问，带我层层剥离表象，精准洞察到我真正的核心需求和深层困惑。几次下来，我对她建立了深深的信任，也真正感受到教练对人生的正向影响。
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-semibold">
+                    W
+                  </div>
+                  <div className="ml-3">
+                    <p className="font-medium text-slate-900">Scientist</p>
+                    <p className="text-sm text-slate-500">互联网大厂</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Testimonial 4 */}
+              <div className="bg-white rounded-xl shadow-md p-8 hover:shadow-lg transition-shadow">
+                <div className="flex items-start mb-4">
+                  <svg className="w-8 h-8 text-amber-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                  </svg>
+                </div>
+                <p className="text-slate-700 leading-relaxed mb-4">
+                  与Connie近三个月的陪伴和支持是我最棒的体验，她在情感上支持和肯定让我找到了久违的幸福感觉，在理智上的追问和引导又给我另一双眼睛另一个视角，我的世界再次打开了一扇大门，给我意料之外的收获和成长。
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 font-semibold">
+                    C
+                  </div>
+                  <div className="ml-3">
+                    <p className="font-medium text-slate-900">Scientist</p>
+                    <p className="text-sm text-slate-500">医药公司</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
       <section className="bg-slate-900 text-white py-16">
         <div className="container mx-auto px-4">

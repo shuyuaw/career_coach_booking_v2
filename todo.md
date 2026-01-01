@@ -124,3 +124,8 @@
 - [x] Replace homepage photo with new white background photo (connie_white.jpg)
 - [x] Replace all instances of "康妮" with "Connie"
 - [x] Swap order of "职业兴趣深度发掘" and "跨行转岗战略咨询" service cards
+
+## Client Testimonials Addition
+- [x] Add testimonials section to homepage with 4 client reviews
+- [x] Design testimonials layout with professional styling
+- [x] Include client role/company information with each testimonial
