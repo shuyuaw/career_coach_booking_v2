@@ -170,3 +170,11 @@
 - [x] Store calendar event UID in bookings table for deletion reference
 - [x] Add calendarEventUid field to bookings table schema
 - [x] Update createBooking to capture and store calendar event UID
+
+## Calendar Name Selection
+- [x] Add CALDAV_CALENDAR_NAME environment variable support
+- [x] Update caldav.ts to find and use calendar by name instead of calendars[0]
+- [x] Add fallback to calendars[0] if specified calendar name not found
+- [x] Create script to list all available calendars
+- [ ] Request CALDAV_CALENDAR_NAME secret from user
+- [ ] Test calendar selection with current account

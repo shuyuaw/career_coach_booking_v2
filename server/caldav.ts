@@ -157,6 +157,29 @@ function generateUID(): string {
 }
 
 /**
+ * Find calendar by name from the list of available calendars.
+ * Falls back to first calendar if name not specified or not found.
+ */
+function findCalendar(calendars: DAVCalendar[], calendarName?: string): DAVCalendar {
+  if (!calendarName) {
+    console.log('[CalDAV] No calendar name specified, using first calendar');
+    return calendars[0];
+  }
+
+  const found = calendars.find(
+    (cal) => cal.displayName === calendarName || cal.description === calendarName
+  );
+
+  if (found) {
+    console.log(`[CalDAV] Found calendar: ${found.displayName}`);
+    return found;
+  }
+
+  console.warn(`[CalDAV] Calendar "${calendarName}" not found, using first calendar`);
+  return calendars[0];
+}
+
+/**
  * Create a booking event in Apple Calendar.
  * @param startTime Session start time (Unix timestamp in milliseconds)
  * @param endTime Session end time (Unix timestamp in milliseconds)
@@ -180,8 +203,9 @@ export async function createBookingEvent(
       throw new Error('No calendars found');
     }
 
-    // Use the first calendar (primary calendar)
-    const calendar = calendars[0];
+    // Find calendar by name from environment variable
+    const calendarName = process.env.CALDAV_CALENDAR_NAME;
+    const calendar = findCalendar(calendars, calendarName);
 
     const uid = generateUID();
     const now = formatICalDate(Date.now());
