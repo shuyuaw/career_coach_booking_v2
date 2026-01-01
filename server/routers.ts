@@ -19,6 +19,7 @@ import {
   getAllUserBookings,
 } from "./bookingDb";
 import { getBusySlots, createBookingEvent, deleteBookingEvent } from "./caldav";
+import { getCachedBusySlotsForRange, setCachedBusySlots } from "./busySlotsCache";
 import { sendBookingConfirmation, sendBookingCancellation } from "./email";
 import { TRPCError } from "@trpc/server";
 
@@ -121,6 +122,22 @@ export const appRouter = router({
         return user;
       }),
 
+    // Prefetch busy slots for the next 30 days (for caching)
+    prefetchBusySlots: publicProcedure
+      .query(async () => {
+        const now = Date.now();
+        const thirtyDaysLater = now + 30 * 24 * 60 * 60 * 1000;
+        
+        console.log('[Prefetch] Fetching busy slots for next 30 days...');
+        const busySlots = await getBusySlots(now, thirtyDaysLater);
+        
+        // Cache the result
+        setCachedBusySlots(now, thirtyDaysLater, busySlots);
+        
+        console.log(`[Prefetch] Cached ${busySlots.length} busy slots`);
+        return { success: true, cachedSlots: busySlots.length };
+      }),
+
     // Get available time slots
     getAvailableSlots: publicProcedure
       .input(
@@ -133,9 +150,19 @@ export const appRouter = router({
         const [year, month, day] = input.date.split('-').map(Number);
         const startDate = new Date(year, month - 1, day, 0, 0, 0, 0);
         const endDate = new Date(year, month - 1, day, 23, 59, 59, 999);
-        const busySlots = await getBusySlots(startDate.getTime(), endDate.getTime());
+        
+        // Try to get from cache first
+        let busySlots = getCachedBusySlotsForRange(startDate.getTime(), endDate.getTime());
+        
+        if (!busySlots) {
+          // Cache miss - fetch from CalDAV
+          console.log('[Slots] Cache MISS - fetching from CalDAV');
+          busySlots = await getBusySlots(startDate.getTime(), endDate.getTime());
+          // Cache this single day query too
+          setCachedBusySlots(startDate.getTime(), endDate.getTime(), busySlots);
+        }
+        
         const busyBlocks = busySlots.map(slot => ({ startTime: slot.start, endTime: slot.end }));
-
         const slots = generateAvailableSlots(startDate, endDate, busyBlocks);
 
         return { slots };

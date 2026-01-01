@@ -189,3 +189,11 @@
 - [x] Check if getBusySlots correctly reads the event
 - [x] Check if generateAvailableSlots correctly excludes busy slots
 - [x] Fix the bug and verify with tests
+
+## Performance Optimization: Slow Time Slot Loading
+- [x] Analyze current CalDAV query pattern and identify bottleneck
+- [x] Create busySlotsCache module with 5-minute TTL
+- [x] Add prefetchBusySlots API endpoint (fetch 30 days ahead)
+- [x] Modify generateAvailableSlots to use cache first
+- [x] Update frontend to call prefetch on page load
+- [x] Test performance improvement

@@ -24,6 +24,12 @@ export default function BookingPage() {
     { enabled: !!slug }
   );
 
+  // Prefetch busy slots for next 30 days on page load
+  trpc.booking.prefetchBusySlots.useQuery(undefined, {
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnWindowFocus: false,
+  });
+
   // Fetch user's bookings
   const { data: bookingsData, refetch: refetchBookings } = trpc.booking.getUserBookings.useQuery(
     { userId: user?.mobileNumber || "" },
