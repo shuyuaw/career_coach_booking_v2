@@ -122,10 +122,12 @@ export async function getBusySlots(startDate: number, endDate: number): Promise<
 
 /**
  * Parse iCalendar date string to Unix timestamp.
- * Supports formats: YYYYMMDDTHHMMSS or YYYYMMDDTHHMMSSZ
+ * Supports formats:
+ * - YYYYMMDDTHHMMSSZ (UTC time, ends with Z)
+ * - YYYYMMDDTHHMMSS (local time, no Z - assumes China timezone UTC+8)
  */
 function parseICalDate(dateStr: string): number {
-  // Remove timezone indicator if present
+  const isUTC = dateStr.endsWith('Z');
   const cleaned = dateStr.replace(/[TZ]/g, '');
 
   const year = parseInt(cleaned.substring(0, 4));
@@ -135,7 +137,15 @@ function parseICalDate(dateStr: string): number {
   const minute = parseInt(cleaned.substring(10, 12));
   const second = parseInt(cleaned.substring(12, 14));
 
-  return new Date(Date.UTC(year, month, day, hour, minute, second)).getTime();
+  if (isUTC) {
+    // UTC time (ends with Z) - use as is
+    return new Date(Date.UTC(year, month, day, hour, minute, second)).getTime();
+  } else {
+    // Local time (no Z) - assume China timezone (UTC+8)
+    // Subtract 8 hours to convert to UTC
+    const utcTimestamp = new Date(Date.UTC(year, month, day, hour, minute, second)).getTime();
+    return utcTimestamp - 8 * 60 * 60 * 1000;
+  }
 }
 
 /**

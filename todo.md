@@ -183,3 +183,9 @@
 - [x] Modify getBusySlots() to only read from specified calendar (not all calendars)
 - [x] Modify deleteBookingEvent() to only search in specified calendar (not all calendars)
 - [x] Test updated logic to ensure subscribed calendars don't interfere with availability
+
+## Bug: Busy Slots Not Excluded
+- [x] Diagnose why Calendar event on Jan 2, 17:00-18:00 still shows as available
+- [x] Check if getBusySlots correctly reads the event
+- [x] Check if generateAvailableSlots correctly excludes busy slots
+- [x] Fix the bug and verify with tests
