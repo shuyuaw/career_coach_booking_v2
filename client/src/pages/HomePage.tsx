@@ -5,9 +5,9 @@ export default function HomePage() {
       <section className="container mx-auto px-4 py-20 md:py-32">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-            在职场的转折点，
+            在事业的转折点，
             <br />
-            遇见更清晰的自己
+            找回闪闪发光的自己
           </h1>
           <p className="text-xl md:text-2xl text-slate-600 leading-relaxed">
             专注于跨行转岗与职业兴趣发掘。通过深度的启发式对话，
