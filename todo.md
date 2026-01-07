@@ -236,3 +236,10 @@
 - [x] Implement confirmation dialog before deletion
 - [x] Test delete functionality with unit tests
 - [x] Verify admin-only access control
+
+## Admin Dashboard - Manual Expiry Date Adjustment
+- [x] Add backend endpoint to set custom unlimited expiry date (setUnlimitedExpiry)
+- [x] Add date picker UI in admin dashboard for unlimited members (click expiry date to edit)
+- [x] Allow extending or shortening expiry date
+- [x] Test expiry date adjustment functionality (all 3 unit tests passed)
+- [x] Verify admin-only access control

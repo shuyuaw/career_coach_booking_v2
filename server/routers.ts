@@ -485,6 +485,34 @@ export const appRouter = router({
         return { success: true, expiry };
       }),
 
+    // Set custom unlimited expiry date
+    setUnlimitedExpiry: protectedProcedure
+      .input(
+        z.object({
+          mobileNumber: z.string(),
+          expiryDate: z.string(), // ISO date string (YYYY-MM-DD)
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+
+        const user = await getBookingUserByMobile(input.mobileNumber);
+        if (!user) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+        }
+
+        // Parse date and set to end of day (23:59:59) in China timezone
+        const [year, month, day] = input.expiryDate.split("-").map(Number);
+        // Create date in UTC, then adjust for China timezone (UTC+8)
+        const expiry = Date.UTC(year, month - 1, day, 15, 59, 59, 999); // 23:59:59 CST = 15:59:59 UTC
+
+        await updateBookingUserUnlimited(input.mobileNumber, expiry);
+
+        return { success: true, expiry };
+      }),
+
     // Get user bookings (for admin view)
     getUserBookings: protectedProcedure
       .input(z.object({ mobileNumber: z.string() }))

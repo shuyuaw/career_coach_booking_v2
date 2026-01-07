@@ -28,6 +28,7 @@ export default function AdminDashboard() {
   const [newUserEmail, setNewUserEmail] = useState("");
   const [newUserCredits, setNewUserCredits] = useState("0");
   const [editingCredits, setEditingCredits] = useState<{ [key: string]: string }>({});
+  const [editingExpiry, setEditingExpiry] = useState<{ [key: string]: string }>({});
 
   // Check admin status
   const { data: adminCheck, isLoading: adminCheckLoading } = trpc.admin.isAdmin.useQuery(
@@ -95,6 +96,18 @@ export default function AdminDashboard() {
     },
   });
 
+  // Set unlimited expiry mutation
+  const setUnlimitedExpiryMutation = trpc.admin.setUnlimitedExpiry.useMutation({
+    onSuccess: () => {
+      toast.success("有效期已更新");
+      refetchUsers();
+      setEditingExpiry({});
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
   // Delete user mutation
   const deleteUserMutation = trpc.admin.deleteUser.useMutation({
     onSuccess: () => {
@@ -142,6 +155,28 @@ export default function AdminDashboard() {
 
   const handleCancelEdit = (mobileNumber: string) => {
     setEditingCredits((prev) => {
+      const updated = { ...prev };
+      delete updated[mobileNumber];
+      return updated;
+    });
+  };
+
+  const handleEditExpiry = (mobileNumber: string, currentExpiry: number | null) => {
+    // Format current expiry to YYYY-MM-DD for input
+    const date = currentExpiry ? new Date(currentExpiry) : new Date();
+    const formatted = date.toISOString().split('T')[0];
+    setEditingExpiry((prev) => ({
+      ...prev,
+      [mobileNumber]: formatted,
+    }));
+  };
+
+  const handleSetExpiry = (mobileNumber: string, expiryDate: string) => {
+    setUnlimitedExpiryMutation.mutate({ mobileNumber, expiryDate });
+  };
+
+  const handleCancelExpiryEdit = (mobileNumber: string) => {
+    setEditingExpiry((prev) => {
       const updated = { ...prev };
       delete updated[mobileNumber];
       return updated;
@@ -338,9 +373,52 @@ export default function AdminDashboard() {
                             <CheckCircle2 className="w-5 h-5 text-purple-600" />
                             <span className="font-medium text-purple-600">无限制会员</span>
                           </div>
-                          <p className="text-sm text-gray-600 mt-1">
-                            有效期至：{user.unlimitedExpiry ? format(new Date(user.unlimitedExpiry), "yyyy年MM月dd日", { locale: zhCN }) : ""}
-                          </p>
+                          {editingExpiry[user.mobileNumber] !== undefined ? (
+                            <div className="flex items-center gap-2 mt-2">
+                              <Input
+                                type="date"
+                                value={editingExpiry[user.mobileNumber]}
+                                onChange={(e) =>
+                                  setEditingExpiry((prev) => ({
+                                    ...prev,
+                                    [user.mobileNumber]: e.target.value,
+                                  }))
+                                }
+                                className="w-40 h-8 text-sm"
+                              />
+                              <Button
+                                size="sm"
+                                onClick={() =>
+                                  handleSetExpiry(
+                                    user.mobileNumber,
+                                    editingExpiry[user.mobileNumber]
+                                  )
+                                }
+                                disabled={setUnlimitedExpiryMutation.isPending}
+                              >
+                                {setUnlimitedExpiryMutation.isPending ? (
+                                  <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                  "保存"
+                                )}
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleCancelExpiryEdit(user.mobileNumber)}
+                              >
+                                取消
+                              </Button>
+                            </div>
+                          ) : (
+                            <p
+                              className="text-sm text-gray-600 mt-1 cursor-pointer hover:text-purple-600 transition-colors"
+                              onClick={() => handleEditExpiry(user.mobileNumber, user.unlimitedExpiry)}
+                              title="点击编辑有效期"
+                            >
+                              有效期至：{user.unlimitedExpiry ? format(new Date(user.unlimitedExpiry), "yyyy年MM月dd日", { locale: zhCN }) : ""}
+                            </p>
+                          )}
                         </div>
                       ) : editingCredits[user.mobileNumber] !== undefined ? (
                         <div className="flex items-center gap-2 mt-1">
