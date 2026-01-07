@@ -315,18 +315,7 @@ export default function BookingPage() {
           </CardContent>
         </Card>
 
-        {/* Info Card */}
-        <Card className="bg-blue-50 border-blue-200">
-          <CardContent className="pt-6">
-            <h3 className="font-medium text-blue-900 mb-2">预约须知</h3>
-            <ul className="text-sm text-blue-800 space-y-1">
-              <li>• 每次约谈时长为60分钟</li>
-              <li>• 只要约谈时间晚于现在即可预约或取消</li>
-              <li>• 无限制会员可随时预约约谈</li>
-              <li>• 约谈将通过腾讯会议进行</li>
-            </ul>
-          </CardContent>
-        </Card>
+
       </div>
     </div>
   );
