@@ -15,7 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Loader2, UserPlus, Plus, CreditCard, Copy, CheckCircle2 } from "lucide-react";
+import { Loader2, UserPlus, Plus, CreditCard, Copy, CheckCircle2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { zhCN } from "date-fns/locale";
@@ -88,6 +88,17 @@ export default function AdminDashboard() {
   const activateUnlimitedMutation = trpc.admin.activateUnlimited.useMutation({
     onSuccess: () => {
       toast.success("无限制会员已激活（12周）");
+      refetchUsers();
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  // Delete user mutation
+  const deleteUserMutation = trpc.admin.deleteUser.useMutation({
+    onSuccess: () => {
+      toast.success("用户已删除");
       refetchUsers();
     },
     onError: (error) => {
@@ -290,14 +301,30 @@ export default function AdminDashboard() {
                         <div>邮箱：{user.email}</div>
                       </CardDescription>
                     </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleCopyBookingUrl(user.accessSlug)}
-                    >
-                      <Copy className="w-4 h-4 mr-2" />
-                      复制链接
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleCopyBookingUrl(user.accessSlug)}
+                      >
+                        <Copy className="w-4 h-4 mr-2" />
+                        复制链接
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        onClick={() => {
+                          if (window.confirm(`确定要删除用户 ${user.nickname} 吗？此操作将同时删除该用户的所有预约记录，且无法恢复。`)) {
+                            deleteUserMutation.mutate({ mobileNumber: user.mobileNumber });
+                          }
+                        }}
+                        disabled={deleteUserMutation.isPending}
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        删除
+                      </Button>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">

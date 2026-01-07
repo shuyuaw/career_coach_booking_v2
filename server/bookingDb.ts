@@ -92,6 +92,24 @@ export async function getAllBookingUsers() {
 }
 
 /**
+ * Delete a booking user by mobile number
+ */
+export async function deleteBookingUser(mobileNumber: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // First delete all bookings for this user
+  await db
+    .delete(bookings)
+    .where(eq(bookings.userId, mobileNumber));
+
+  // Then delete the user
+  await db
+    .delete(bookingUsers)
+    .where(eq(bookingUsers.mobileNumber, mobileNumber));
+}
+
+/**
  * Create a new booking
  */
 export async function createBooking(booking: InsertBooking) {

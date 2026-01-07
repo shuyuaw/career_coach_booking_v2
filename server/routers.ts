@@ -11,6 +11,7 @@ import {
   updateBookingUserCredits,
   updateBookingUserUnlimited,
   getAllBookingUsers,
+  deleteBookingUser,
   createBooking,
   getUserActiveBookings,
   getUserWeeklyBookings,
@@ -494,6 +495,24 @@ export const appRouter = router({
 
         const bookings = await getAllUserBookings(input.mobileNumber);
         return { bookings };
+      }),
+
+    // Delete a booking user
+    deleteUser: protectedProcedure
+      .input(z.object({ mobileNumber: z.string() }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+
+        const user = await getBookingUserByMobile(input.mobileNumber);
+        if (!user) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
+        }
+
+        await deleteBookingUser(input.mobileNumber);
+
+        return { success: true };
       }),
   }),
 });

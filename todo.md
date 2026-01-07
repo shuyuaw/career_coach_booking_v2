@@ -228,3 +228,11 @@
 - [x] Root cause: busySlotsCache filtering logic was too strict (required event.start >= range.start AND event.end <= range.end)
 - [x] Fixed: Changed filter to detect overlapping events (event.start < range.end AND event.end > range.start)
 - [x] Verified: Jan 2 shows 10 slots (missing 10:00, 11:00), Jan 3-5 show 0 slots, Jan 6 shows 4 slots (09:00, 17:00-19:00)
+
+## Admin Dashboard - Delete User Feature
+- [x] Add deleteBookingUser function to bookingDb.ts (deletes user and all their bookings)
+- [x] Add deleteUser backend endpoint in routers.ts
+- [x] Add delete button to each user row in admin dashboard
+- [x] Implement confirmation dialog before deletion
+- [x] Test delete functionality with unit tests
+- [x] Verify admin-only access control
