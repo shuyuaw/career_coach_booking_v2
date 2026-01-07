@@ -243,6 +243,3 @@
 - [x] Allow extending or shortening expiry date
 - [x] Test expiry date adjustment functionality (all 3 unit tests passed)
 - [x] Verify admin-only access control
-
-## Remove Booking Notice Section
-- [x] Remove "预约须知" section from booking page
