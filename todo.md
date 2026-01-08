@@ -243,3 +243,9 @@
 - [x] Allow extending or shortening expiry date
 - [x] Test expiry date adjustment functionality (all 3 unit tests passed)
 - [x] Verify admin-only access control
+
+## Update Booking Hours
+- [x] Change booking hours from 09:00-20:00 to 10:00-22:00
+- [x] Update generateAvailableSlots function in routers.ts
+- [x] Updated start time: 10:00 China time (UTC 02:00)
+- [x] Updated end time: 22:00 China time (UTC 14:00)

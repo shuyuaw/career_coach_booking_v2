@@ -61,19 +61,19 @@ function generateAvailableSlots(
   const month = chinaDate.getUTCMonth();
   const day = chinaDate.getUTCDate();
   
-  // China time 09:00 = UTC 01:00 (because UTC+8)
-  const current = new Date(Date.UTC(year, month, day, 1, 0, 0, 0));
-  // China time 20:00 = UTC 12:00, so last slot ends at UTC 13:00
-  const endOfDayUTC = Date.UTC(year, month, day, 13, 0, 0, 0);
+  // China time 10:00 = UTC 02:00 (because UTC+8)
+  const current = new Date(Date.UTC(year, month, day, 2, 0, 0, 0));
+  // China time 22:00 = UTC 14:00, so last slot ends at UTC 15:00
+  const endOfDayUTC = Date.UTC(year, month, day, 15, 0, 0, 0);
 
   while (current.getTime() < endOfDayUTC) {
     const currentHour = current.getUTCHours();
     
-    // Skip if slot is after 8 PM China time (20:00 China = 12:00 UTC)
-    if (currentHour > 12) {
-      // Move to next day at 9 AM China time (01:00 UTC)
+    // Skip if slot is after 10 PM China time (22:00 China = 14:00 UTC)
+    if (currentHour > 14) {
+      // Move to next day at 10 AM China time (02:00 UTC)
       current.setUTCDate(current.getUTCDate() + 1);
-      current.setUTCHours(1, 0, 0, 0);
+      current.setUTCHours(2, 0, 0, 0);
       continue;
     }
 
