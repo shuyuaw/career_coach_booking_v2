@@ -78,11 +78,11 @@ function generateAvailableSlots(
     }
 
     const slotStart = current.getTime();
-    const slotEnd = slotStart + 60 * 60 * 1000; // 60 minutes
+    const slotEnd = slotStart + 30 * 60 * 1000; // 30 minutes
 
     // Skip if slot is in the past
     if (slotStart < now) {
-      current.setUTCHours(current.getUTCHours() + 1);
+      current.setUTCMinutes(current.getUTCMinutes() + 30);
       continue;
     }
 
@@ -95,7 +95,7 @@ function generateAvailableSlots(
       slots.push(slotStart);
     }
 
-    current.setUTCHours(current.getUTCHours() + 1);
+    current.setUTCMinutes(current.getUTCMinutes() + 30);
   }
 
   return slots;
@@ -211,7 +211,7 @@ export const appRouter = router({
           });
         }
 
-        const endTime = input.startTime + 60 * 60 * 1000;
+        const endTime = input.startTime + 30 * 60 * 1000;
 
         // Check credit availability
         let creditType: "bulk" | "unlimited";

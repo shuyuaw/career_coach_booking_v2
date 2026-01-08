@@ -249,3 +249,13 @@
 - [x] Update generateAvailableSlots function in routers.ts
 - [x] Updated start time: 10:00 China time (UTC 02:00)
 - [x] Updated end time: 22:00 China time (UTC 14:00)
+
+## Change Booking Interval to 30 Minutes
+- [x] Update generateAvailableSlots to create slots every 30 minutes instead of 60 minutes
+- [x] Update slot duration from 60 minutes to 30 minutes
+- [x] Changed slot end time calculation: 30 * 60 * 1000 (30 minutes)
+- [x] Changed slot increment: setUTCMinutes(+30) instead of setUTCHours(+1)
+- [x] Updated booking endTime calculation to use 30 minutes
+
+## Remove Booking Notice Section (Retry)
+- [x] Remove "预约须知" section from booking page
