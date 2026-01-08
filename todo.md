@@ -259,3 +259,9 @@
 
 ## Remove Booking Notice Section (Retry)
 - [x] Remove "预约须知" section from booking page
+
+## Bug: Time Display Shows Duplicates
+- [x] Fix time formatting in frontend to show minutes correctly (10:00, 10:30, 11:00, 11:30)
+- [x] Added chinaMinute = d.getUTCMinutes() to extract minutes
+- [x] Updated display format to include minutes: HH:MM
+- [x] Updated CardDescription to reflect 30-minute duration
