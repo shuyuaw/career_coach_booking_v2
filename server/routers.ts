@@ -63,14 +63,14 @@ function generateAvailableSlots(
   
   // China time 10:00 = UTC 02:00 (because UTC+8)
   const current = new Date(Date.UTC(year, month, day, 2, 0, 0, 0));
-  // China time 22:00 = UTC 14:00, so last slot ends at UTC 15:00
-  const endOfDayUTC = Date.UTC(year, month, day, 15, 0, 0, 0);
+  // China time 21:00 = UTC 13:00, so last slot ends at UTC 14:00
+  const endOfDayUTC = Date.UTC(year, month, day, 14, 0, 0, 0);
 
   while (current.getTime() < endOfDayUTC) {
     const currentHour = current.getUTCHours();
     
-    // Skip if slot is after 10 PM China time (22:00 China = 14:00 UTC)
-    if (currentHour > 14) {
+    // Skip if slot is after 9 PM China time (21:00 China = 13:00 UTC)
+    if (currentHour > 13) {
       // Move to next day at 10 AM China time (02:00 UTC)
       current.setUTCDate(current.getUTCDate() + 1);
       current.setUTCHours(2, 0, 0, 0);
@@ -78,7 +78,7 @@ function generateAvailableSlots(
     }
 
     const slotStart = current.getTime();
-    const slotEnd = slotStart + 30 * 60 * 1000; // 30 minutes
+    const slotEnd = slotStart + 60 * 60 * 1000; // 60 minutes
 
     // Skip if slot is in the past
     if (slotStart < now) {
@@ -211,7 +211,7 @@ export const appRouter = router({
           });
         }
 
-        const endTime = input.startTime + 30 * 60 * 1000;
+        const endTime = input.startTime + 60 * 60 * 1000;
 
         // Check credit availability
         let creditType: "bulk" | "unlimited";

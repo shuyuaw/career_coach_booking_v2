@@ -239,7 +239,7 @@ export default function BookingPage() {
         <Card>
           <CardHeader>
             <CardTitle>选择时间</CardTitle>
-            <CardDescription>选择日期和时间段预约您的教练约谈（每次30分钟）</CardDescription>
+            <CardDescription>选择日期和时间段预约您的教练约谈（每次60分钟）</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Date Picker */}

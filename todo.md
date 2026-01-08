@@ -265,3 +265,12 @@
 - [x] Added chinaMinute = d.getUTCMinutes() to extract minutes
 - [x] Updated display format to include minutes: HH:MM
 - [x] Updated CardDescription to reflect 30-minute duration
+
+## Change Booking Duration and End Time
+- [x] Change booking duration back to 60 minutes
+- [x] Change end time from 22:00 to 21:00 (UTC 14:00)
+- [x] Update conflict checking to require full 60-minute availability (already correct)
+- [x] Keep 30-minute slot generation but check for 60-minute availability
+- [x] Updated slot end time calculation: 60 * 60 * 1000
+- [x] Updated booking endTime calculation: 60 * 60 * 1000
+- [x] Updated frontend description to "每次60分钟"
