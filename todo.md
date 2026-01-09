@@ -283,3 +283,8 @@
 - [x] Update BookingPage.tsx to display meeting links for each booking
 - [x] Add copy button for meeting links
 - [x] Add clickable link to open meeting in new tab
+
+## Bug: Meeting Links Not Showing in Customer Booking Page
+- [x] Check existing bookings in database for meetingLink values (4 active bookings found)
+- [x] Update existing bookings with TENCENT_MEETING_URL
+- [x] Verify meeting links display correctly

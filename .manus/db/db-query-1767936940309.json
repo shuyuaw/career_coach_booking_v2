@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE bookings SET meeting_link = 'https://meeting.tencent.com/p/5146842585' WHERE meeting_link IS NULL OR meeting_link = ''",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2C3PRYztej175k5.fc18905ccbe1 --database inkPCLizzTv9MTUcRxEYef --execute UPDATE bookings SET meeting_link = 'https://meeting.tencent.com/p/5146842585' WHERE meeting_link IS NULL OR meeting_link = ''",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1546
+}

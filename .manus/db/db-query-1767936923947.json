@@ -1,0 +1,34 @@
+{
+  "query": "SELECT id, user_id, meeting_link, status FROM bookings WHERE status = 'active' LIMIT 5",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2C3PRYztej175k5.fc18905ccbe1 --database inkPCLizzTv9MTUcRxEYef --execute SELECT id, user_id, meeting_link, status FROM bookings WHERE status = 'active' LIMIT 5",
+  "rows": [
+    {
+      "id": "bO3gfaX9NeNivcBP9GPXY",
+      "user_id": "13051531691",
+      "meeting_link": "NULL",
+      "status": "active"
+    },
+    {
+      "id": "HfsnFmANP9-2UlAJcu6Gw",
+      "user_id": "13522883397",
+      "meeting_link": "NULL",
+      "status": "active"
+    },
+    {
+      "id": "TDpJlnbzdL5tNmn_NqHKx",
+      "user_id": "17512953465",
+      "meeting_link": "NULL",
+      "status": "active"
+    },
+    {
+      "id": "U1lmqGy3mhIo22SBr7Hzr",
+      "user_id": "15652788218",
+      "meeting_link": "NULL",
+      "status": "active"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tuser_id\tmeeting_link\tstatus\nbO3gfaX9NeNivcBP9GPXY\t13051531691\tNULL\tactive\nHfsnFmANP9-2UlAJcu6Gw\t13522883397\tNULL\tactive\nTDpJlnbzdL5tNmn_NqHKx\t17512953465\tNULL\tactive\nU1lmqGy3mhIo22SBr7Hzr\t15652788218\tNULL\tactive\n",
+  "stderr": "",
+  "execution_time_ms": 1544
+}
