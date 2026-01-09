@@ -207,9 +207,9 @@ export default function BookingPage() {
                     key={booking.id}
                     className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 flex-1">
                       <CalendarIcon className="w-5 h-5 text-gray-500" />
-                      <div>
+                      <div className="flex-1">
                         <p className="font-medium text-gray-900">
                           {booking.startTime ? format(new Date(Number(booking.startTime)), "yyyy年MM月dd日 HH:mm", {
                             locale: zhCN,
@@ -218,6 +218,29 @@ export default function BookingPage() {
                         <p className="text-sm text-gray-500">
                           {booking.creditTypeUsed === "bulk" ? "单次课时" : "无限制会员"}
                         </p>
+                        {booking.meetingLink && (
+                          <div className="mt-2 flex items-center gap-2">
+                            <a
+                              href={booking.meetingLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm text-blue-600 hover:text-blue-800 underline"
+                            >
+                              腾讯会议链接
+                            </a>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-6 px-2 text-xs"
+                              onClick={() => {
+                                navigator.clipboard.writeText(booking.meetingLink!);
+                                alert("会议链接已复制到剪贴板");
+                              }}
+                            >
+                              复制
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     </div>
                     <Button

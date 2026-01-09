@@ -1,0 +1,1 @@
+ALTER TABLE `bookings` ADD `meeting_link` varchar(500);

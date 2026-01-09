@@ -274,3 +274,12 @@
 - [x] Updated slot end time calculation: 60 * 60 * 1000
 - [x] Updated booking endTime calculation: 60 * 60 * 1000
 - [x] Updated frontend description to "每次60分钟"
+
+## Add Meeting Link Display to Customer Booking Page
+- [x] Check if meeting links are stored in bookings table (added meetingLink field)
+- [x] Update schema to add meetingLink varchar(500) field
+- [x] Run pnpm db:push to apply schema changes
+- [x] Update booking creation to save meetingLink from TENCENT_MEETING_URL
+- [x] Update BookingPage.tsx to display meeting links for each booking
+- [x] Add copy button for meeting links
+- [x] Add clickable link to open meeting in new tab

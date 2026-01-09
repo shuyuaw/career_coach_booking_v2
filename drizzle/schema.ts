@@ -49,6 +49,7 @@ export const bookings = mysqlTable("bookings", {
   status: mysqlEnum("status", ["active", "cancelled"]).default("active").notNull(),
   creditTypeUsed: mysqlEnum("credit_type_used", ["bulk", "unlimited"]).notNull(),
   calendarEventUid: varchar("calendar_event_uid", { length: 255 }), // UID of the calendar event for deletion
+  meetingLink: varchar("meeting_link", { length: 500 }), // Tencent Meeting link
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });

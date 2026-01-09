@@ -261,6 +261,7 @@ export const appRouter = router({
           status: "active",
           creditTypeUsed: creditType,
           calendarEventUid,
+          meetingLink: tencentMeetingUrl,
         });
 
         // Deduct bulk credit if applicable
